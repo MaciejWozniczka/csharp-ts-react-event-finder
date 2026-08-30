@@ -19,3 +19,5 @@ TestResults/
 api/EventFinder.Api/EventFinder.db
 api/EventFinder.Api/EventFinder.db-shm
 api/EventFinder.Api/EventFinder.db-wal
+api/EventFinder.Api/appsettings.json
+api/EventFinder.AppHost/appsettings.json
