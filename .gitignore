@@ -16,3 +16,6 @@ TestResults/
 .env
 .env.*
 /api/.github/copilot-instructions.md
+api/EventFinder.Api/EventFinder.db
+api/EventFinder.Api/EventFinder.db-shm
+api/EventFinder.Api/EventFinder.db-wal
