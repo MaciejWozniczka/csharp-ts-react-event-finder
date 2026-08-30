@@ -1,0 +1,5 @@
+{
+  "appHost": {
+    "path": "EventFinder.AppHost/EventFinder.AppHost.csproj"
+  }
+}

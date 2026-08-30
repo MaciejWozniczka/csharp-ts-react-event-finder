@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="EventFinder.Api/EventFinder.Api.csproj" />
+  <Project Path="EventFinder.AppHost/EventFinder.AppHost.csproj" />
+  <Project Path="EventFinder.Application/EventFinder.Application.csproj" />
+  <Project Path="EventFinder.Domain/EventFinder.Domain.csproj" />
+  <Project Path="EventFinder.Infrastructure/EventFinder.Infrastructure.csproj" />
+  <Project Path="EventFinder.ServiceDefaults/EventFinder.ServiceDefaults.csproj" />
+</Solution>

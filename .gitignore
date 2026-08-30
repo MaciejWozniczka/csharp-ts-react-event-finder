@@ -1,0 +1,17 @@
+# Build output
+**/bin/
+**/obj/
+
+# IDE and user-specific files
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Test results and local configuration
+TestResults/
+*.trx
+.env
+.env.*
