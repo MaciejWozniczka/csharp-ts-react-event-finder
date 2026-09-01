@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText } from "@mui/material";
+import { Container, List, ListItem, ListItemText } from "@mui/material";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import NavBar from "./NavBar";
@@ -15,13 +15,15 @@ function App() {
   return (
     <>
       <NavBar />
-      <List>
-        {activities.map((a) => (
-          <ListItem key={a.id}>
-            <ListItemText>{a.title}</ListItemText>
-          </ListItem>
-        ))}
-      </List>
+      <Container maxWidth="xl" sx={{ mt: 4 }}>
+        <List>
+          {activities.map((a) => (
+            <ListItem key={a.id}>
+              <ListItemText>{a.title}</ListItemText>
+            </ListItem>
+          ))}
+        </List>
+      </Container>
     </>
   );
 }
