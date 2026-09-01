@@ -29,4 +29,12 @@ public class ActivitiesController : BaseApiController
     {
         return await Mediator.Send(new CreateActivity.Command { Activity = activity }, CancellationToken);
     }
+
+    [HttpPut]
+    public async Task<ActionResult> EditActivityAsync(Guid id, Activity activity)
+    {
+        await Mediator.Send(new EditActivity.Command { Activity = activity }, CancellationToken);
+
+        return NoContent();
+    }
 }
