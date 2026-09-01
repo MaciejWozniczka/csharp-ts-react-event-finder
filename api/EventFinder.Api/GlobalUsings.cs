@@ -1,5 +1,6 @@
 // Global using directives
 
+global using EventFinder.Api.Helper;
 global using EventFinder.Application.Activities.Queries;
 global using EventFinder.Domain.Activities;
 global using EventFinder.Infrastructure.Data;
