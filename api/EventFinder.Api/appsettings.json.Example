@@ -9,8 +9,9 @@
     "DefaultConnection": ""
   },
   "Cors": {
-    "AllowedOrigins": [
-      "http://localhost:3000"
-    ]
+    "AllowedOrigins": [""]
+  },
+  "MediatR": {
+    "LicenseKey": ""
   }
 }
