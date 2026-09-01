@@ -27,6 +27,10 @@ builder.Services.AddDbContext<DataContext>(opt =>
 {
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.LicenseKey = builder.Configuration.GetSection("MediatR:LicenseKey").Get<string>();
+});
 
 var app = builder.Build();
 
