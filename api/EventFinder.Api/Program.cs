@@ -1,6 +1,3 @@
-using EventFinder.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();

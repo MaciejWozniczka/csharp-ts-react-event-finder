@@ -1,8 +1,4 @@
-﻿using EventFinder.Domain.Activities;
-using EventFinder.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-
-namespace EventFinder.Application.Activities.Queries;
+﻿namespace EventFinder.Application.Activities.Queries;
 
 public class GetActivityList
 {
