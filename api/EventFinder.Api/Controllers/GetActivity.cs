@@ -1,20 +1,12 @@
-﻿using EventFinder.Domain.Activities;
-using EventFinder.Infrastructure.Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿namespace EventFinder.Api.Controllers;
 
-namespace EventFinder.Api.Controllers;
-
-[Route("api/activities")]
 [ApiController]
-public class GetActivity(DataContext db) : ControllerBase
+public class GetActivity(IMediator mediator) : ControllerBase
 {
-    [HttpGet("{id}")]
+    [HttpGet("api/activities/{id}")]
     public async Task<ActionResult<Activity>> GetActivityAsync(Guid id, CancellationToken cancellationToken)
     {
-        var activity = await db.Activities
-            .Where(a => a.Id == id)
-            .FirstOrDefaultAsync(cancellationToken);
+        var activity = await mediator.Send(new GetActivityDetails.Query { Id = id }, cancellationToken);
 
         if (activity == null)
         {

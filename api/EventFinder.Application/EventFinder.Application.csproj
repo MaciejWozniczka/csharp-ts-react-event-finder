@@ -15,8 +15,4 @@
     <ProjectReference Include="..\EventFinder.Infrastructure\EventFinder.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Activities\" />
-  </ItemGroup>
-
 </Project>

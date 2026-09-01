@@ -29,6 +29,7 @@ builder.Services.AddDbContext<DataContext>(opt =>
 });
 builder.Services.AddMediatR(cfg =>
 {
+    cfg.RegisterServicesFromAssemblyContaining<GetActivityList>();
     cfg.LicenseKey = builder.Configuration.GetSection("MediatR:LicenseKey").Get<string>();
 });
 
