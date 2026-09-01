@@ -1,5 +1,6 @@
 // Global using directives
 
+global using AutoMapper;
 global using EventFinder.Domain.Activities;
 global using EventFinder.Infrastructure.Data;
 global using MediatR;
