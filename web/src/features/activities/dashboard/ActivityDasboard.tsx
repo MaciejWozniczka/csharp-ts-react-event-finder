@@ -1,5 +1,6 @@
 import { Grid } from "@mui/material";
 import ActivityList from "./ActivityList";
+import ActivityDetail from "../details/ActivityDetail";
 
 type Props = {
   activities: Activity[];
@@ -7,9 +8,12 @@ type Props = {
 
 export default function ActivityDasboard({ activities }: Props) {
   return (
-    <Grid container>
-      <Grid size={12}>
+    <Grid container spacing={3}>
+      <Grid size={7}>
         <ActivityList activities={activities} />
+      </Grid>
+      <Grid size={5}>
+        {activities[0] && <ActivityDetail activity={activities[0]} />}
       </Grid>
     </Grid>
   );
