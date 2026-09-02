@@ -10,9 +10,14 @@ import {
 type Props = {
   activity: Activity;
   onCancelActivity: () => void;
+  onOpenForm: (id: string) => void;
 };
 
-export default function ActivityDetail({ activity, onCancelActivity }: Props) {
+export default function ActivityDetail({
+  activity,
+  onCancelActivity,
+  onOpenForm,
+}: Props) {
   return (
     <Card sx={{ borderradius: 3 }}>
       <CardMedia
@@ -28,7 +33,9 @@ export default function ActivityDetail({ activity, onCancelActivity }: Props) {
         <Typography variant="body1">{activity.description}</Typography>
       </CardContent>
       <CardActions>
-        <Button color="primary">Edytuj</Button>
+        <Button color="primary" onClick={() => onOpenForm(activity.id)}>
+          Edytuj
+        </Button>
         <Button color="inherit" onClick={onCancelActivity}>
           Wyjdź
         </Button>

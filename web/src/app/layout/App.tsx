@@ -9,6 +9,7 @@ function App() {
   const [selectedActivity, setSelectedActivity] = useState<
     Activity | undefined
   >(undefined);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     axios
@@ -18,22 +19,36 @@ function App() {
 
   const handleSelectActivity = (id: string) => {
     setSelectedActivity(activities.find((activity) => activity.id === id));
+    setEditMode(false);
   };
 
   const handleCancelSelectActivity = () => {
     setSelectedActivity(undefined);
   };
 
+  const handleOpenForm = (id?: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    id ? handleSelectActivity(id) : handleCancelSelectActivity();
+    setEditMode(true);
+  };
+
+  const handleCloseForm = () => {
+    setEditMode(false);
+  };
+
   return (
     <Box sx={{ backgroundColor: "#eeeeee", minHeight: "100vh" }}>
       <CssBaseline />
-      <NavBar />
+      <NavBar onOpenForm={handleOpenForm} />
       <Container maxWidth="xl" sx={{ mt: 4 }}>
         <ActivityDasboard
           activities={activities}
           onSelectActivity={handleSelectActivity}
           onCancelSelectActivity={handleCancelSelectActivity}
           selectedActivity={selectedActivity!}
+          editMode={editMode}
+          onOpenForm={handleOpenForm}
+          onCloseForm={handleCloseForm}
         />
       </Container>
     </Box>
