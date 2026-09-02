@@ -9,9 +9,10 @@ import {
 
 type Props = {
   activity: Activity;
+  onSelectActivity: (id: string) => void;
 };
 
-export default function ActivityCard({ activity }: Props) {
+export default function ActivityCard({ activity, onSelectActivity }: Props) {
   return (
     <Card>
       <CardContent>
@@ -32,7 +33,11 @@ export default function ActivityCard({ activity }: Props) {
         }}
       >
         <Chip label={activity.category} variant="outlined" />
-        <Button size="medium" variant="contained">
+        <Button
+          size="medium"
+          variant="contained"
+          onClick={() => onSelectActivity(activity.id)}
+        >
           Pokaż szczegóły
         </Button>
       </CardActions>
