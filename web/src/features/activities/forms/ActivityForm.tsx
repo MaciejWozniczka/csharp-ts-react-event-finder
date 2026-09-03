@@ -5,6 +5,7 @@ import type { ChangeEvent, SubmitEvent } from "react";
 type Props = {
   activity?: Activity;
   onCloseForm: () => void;
+  onSubmitForm: (activity: Activity) => void;
 };
 
 type FormValues = Pick<
@@ -21,7 +22,11 @@ const getFormValues = (activity?: Activity): FormValues => ({
   venue: activity?.venue ?? "",
 });
 
-export default function ActivityForm({ activity, onCloseForm }: Props) {
+export default function ActivityForm({
+  activity,
+  onCloseForm,
+  onSubmitForm,
+}: Props) {
   const [values, setValues] = useState(() => getFormValues(activity));
 
   const handleChange = (
@@ -41,7 +46,11 @@ export default function ActivityForm({ activity, onCloseForm }: Props) {
       data[key] = value as string;
     });
 
-    console.log("Form data:", data);
+    if (activity) {
+      data.id = activity.id;
+    }
+
+    onSubmitForm(data as unknown as Activity);
   };
 
   return (

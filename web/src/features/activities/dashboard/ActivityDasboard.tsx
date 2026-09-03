@@ -11,6 +11,7 @@ type Props = {
   editMode: boolean;
   onOpenForm: (id: string) => void;
   onCloseForm: () => void;
+  onSubmitForm: (activity: Activity) => void;
 };
 
 export default function ActivityDasboard({
@@ -21,6 +22,7 @@ export default function ActivityDasboard({
   editMode,
   onOpenForm,
   onCloseForm,
+  onSubmitForm,
 }: Props) {
   return (
     <Grid container spacing={3}>
@@ -39,7 +41,11 @@ export default function ActivityDasboard({
           />
         )}
         {editMode && (
-          <ActivityForm activity={selectedActivity} onCloseForm={onCloseForm} />
+          <ActivityForm
+            activity={selectedActivity}
+            onCloseForm={onCloseForm}
+            onSubmitForm={onSubmitForm}
+          />
         )}
       </Grid>
     </Grid>

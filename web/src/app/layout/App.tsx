@@ -36,6 +36,28 @@ function App() {
     setEditMode(false);
   };
 
+  const handleSubmitForm = (activity: Activity) => {
+    const existingActivity = activities.find(
+      (currentActivity) => currentActivity.id === activity.id,
+    );
+    const savedActivity = existingActivity
+      ? { ...existingActivity, ...activity }
+      : { ...activity, id: crypto.randomUUID() };
+
+    setActivities((currentActivities) =>
+      existingActivity
+        ? currentActivities.map((currentActivity) =>
+            currentActivity.id === savedActivity.id
+              ? savedActivity
+              : currentActivity,
+          )
+        : [...currentActivities, savedActivity],
+    );
+
+    setEditMode(false);
+    setSelectedActivity(savedActivity);
+  };
+
   return (
     <Box sx={{ backgroundColor: "#eeeeee", minHeight: "100vh" }}>
       <CssBaseline />
@@ -49,6 +71,7 @@ function App() {
           editMode={editMode}
           onOpenForm={handleOpenForm}
           onCloseForm={handleCloseForm}
+          onSubmitForm={handleSubmitForm}
         />
       </Container>
     </Box>
