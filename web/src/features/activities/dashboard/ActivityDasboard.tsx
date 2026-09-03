@@ -34,7 +34,7 @@ export default function ActivityDasboard({
           onSelectActivity={onSelectActivity}
         />
       </Grid>
-      <Grid size={5}>
+      <Grid size={5} sx={{ alignSelf: "flex-start", position: "sticky", top: 24 }}>
         {selectedActivity && !editMode && (
           <ActivityDetail
             activity={selectedActivity}
