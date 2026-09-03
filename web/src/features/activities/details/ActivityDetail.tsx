@@ -19,7 +19,7 @@ export default function ActivityDetail({
   onOpenForm,
 }: Props) {
   return (
-    <Card sx={{ borderradius: 3 }}>
+    <Card sx={{ borderRadius: 3 }}>
       <CardMedia
         component="img"
         src={`/images/categoryImages/${activity.category}.jpg`}
