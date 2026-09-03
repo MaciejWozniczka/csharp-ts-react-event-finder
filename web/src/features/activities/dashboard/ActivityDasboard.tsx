@@ -6,6 +6,7 @@ import ActivityForm from "../forms/ActivityForm";
 type Props = {
   activities: Activity[];
   onSelectActivity: (id: string) => void;
+  onDeleteActivity: (id: string) => void;
   onCancelSelectActivity: () => void;
   selectedActivity: Activity;
   editMode: boolean;
@@ -17,6 +18,7 @@ type Props = {
 export default function ActivityDasboard({
   activities,
   onSelectActivity,
+  onDeleteActivity,
   onCancelSelectActivity,
   selectedActivity,
   editMode,
@@ -38,6 +40,7 @@ export default function ActivityDasboard({
             activity={selectedActivity}
             onCancelActivity={onCancelSelectActivity}
             onOpenForm={onOpenForm}
+            onDeleteActivity={onDeleteActivity}
           />
         )}
         {editMode && (

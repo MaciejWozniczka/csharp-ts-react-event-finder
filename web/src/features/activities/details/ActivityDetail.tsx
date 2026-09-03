@@ -11,12 +11,14 @@ type Props = {
   activity: Activity;
   onCancelActivity: () => void;
   onOpenForm: (id: string) => void;
+  onDeleteActivity: (id: string) => void;
 };
 
 export default function ActivityDetail({
   activity,
   onCancelActivity,
   onOpenForm,
+  onDeleteActivity,
 }: Props) {
   return (
     <Card sx={{ borderRadius: 3 }}>
@@ -35,6 +37,9 @@ export default function ActivityDetail({
       <CardActions>
         <Button color="primary" onClick={() => onOpenForm(activity.id)}>
           Edytuj
+        </Button>
+        <Button color="error" onClick={() => onDeleteActivity(activity.id)}>
+          Usuń
         </Button>
         <Button color="inherit" onClick={onCancelActivity}>
           Wyjdź

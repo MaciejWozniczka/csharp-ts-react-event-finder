@@ -12,7 +12,10 @@ type Props = {
   onSelectActivity: (id: string) => void;
 };
 
-export default function ActivityCard({ activity, onSelectActivity }: Props) {
+export default function ActivityCard({
+  activity,
+  onSelectActivity,
+}: Props) {
   return (
     <Card>
       <CardContent>

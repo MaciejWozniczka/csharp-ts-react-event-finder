@@ -36,6 +36,17 @@ function App() {
     setEditMode(false);
   };
 
+  const handleDeleteActivity = (id: string) => {
+    setActivities((currentActivities) =>
+      currentActivities.filter((activity) => activity.id !== id),
+    );
+
+    if (selectedActivity?.id === id) {
+      setSelectedActivity(undefined);
+      setEditMode(false);
+    }
+  };
+
   const handleSubmitForm = (activity: Activity) => {
     const existingActivity = activities.find(
       (currentActivity) => currentActivity.id === activity.id,
@@ -66,6 +77,7 @@ function App() {
         <ActivityDasboard
           activities={activities}
           onSelectActivity={handleSelectActivity}
+          onDeleteActivity={handleDeleteActivity}
           onCancelSelectActivity={handleCancelSelectActivity}
           selectedActivity={selectedActivity!}
           editMode={editMode}
