@@ -54,9 +54,12 @@ export default function ActivityForm({
   };
 
   return (
-    <Paper sx={{ borderRadius: 3, padding: 3 }}>
+    <Paper
+      elevation={0}
+      sx={{ border: "1px solid rgba(7, 92, 45, 0.12)", padding: { xs: 2.5, md: 3.5 } }}
+    >
       <Typography variant="h5" gutterBottom color="primary">
-        Utwórz aktywność
+        {activity ? "Edytuj aktywność" : "Utwórz aktywność"}
       </Typography>
       <Box
         component="form"
@@ -103,7 +106,7 @@ export default function ActivityForm({
           onChange={handleChange}
         />
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 3 }}>
-          <Button type="submit" variant="contained" color="success">
+          <Button type="submit" variant="contained" color="primary">
             Zapisz
           </Button>
           <Button color="inherit" onClick={onCloseForm}>

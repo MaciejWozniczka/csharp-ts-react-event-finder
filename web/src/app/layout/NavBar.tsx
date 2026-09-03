@@ -20,34 +20,42 @@ export default function NavBar({ onOpenForm }: Props) {
         sx={{
           backgroundImage:
             "linear-gradient(45deg, #003113 30%, #025e12 55%, #056b16 80%)",
+          boxShadow: "0 10px 28px rgba(0, 49, 19, 0.22)",
         }}
       >
         <Container maxWidth="xl">
-          <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Toolbar
+            sx={{
+              minHeight: { xs: 72, md: 82 },
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 2,
+            }}
+          >
             <Box>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <Group fontSize="large" />
-                <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+                <Typography variant="h4" sx={{ fontWeight: 800 }}>
                   Event Finder
                 </Typography>
               </Box>
             </Box>
-            <Box sx={{ display: "flex", gap: 2 }}>
+            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
               <Button
                 color="inherit"
-                sx={{ fontSize: "1.2rem", fontWeight: "bold" }}
+                sx={{ fontSize: "1rem", px: 1.25 }}
               >
                 Aktywności
               </Button>
               <Button
                 color="inherit"
-                sx={{ fontSize: "1.2rem", fontWeight: "bold" }}
+                sx={{ fontSize: "1rem", px: 1.25 }}
               >
                 O nas
               </Button>
               <Button
                 color="inherit"
-                sx={{ fontSize: "1.2rem", fontWeight: "bold" }}
+                sx={{ fontSize: "1rem", px: 1.25 }}
               >
                 Kontakt
               </Button>
@@ -55,8 +63,9 @@ export default function NavBar({ onOpenForm }: Props) {
             <Button
               size="large"
               variant="contained"
-              color="warning"
+              color="secondary"
               onClick={() => onOpenForm()}
+              sx={{ boxShadow: "none", px: { xs: 1.5, md: 2.25 } }}
             >
               Utwórz aktywność
             </Button>

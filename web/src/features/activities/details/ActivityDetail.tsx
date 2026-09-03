@@ -6,6 +6,7 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
+import { formatActivityDate } from "../../../app/utils/formatDate";
 
 type Props = {
   activity: Activity;
@@ -21,20 +22,23 @@ export default function ActivityDetail({
   onDeleteActivity,
 }: Props) {
   return (
-    <Card sx={{ borderRadius: 3 }}>
+    <Card
+      elevation={0}
+      sx={{ border: "1px solid rgba(7, 92, 45, 0.12)", overflow: "hidden" }}
+    >
       <CardMedia
         component="img"
         src={`/images/categoryImages/${activity.category}.jpg`}
         alt={activity.category}
       />
-      <CardContent>
-        <Typography variant="h5">{activity.title}</Typography>
-        <Typography variant="subtitle1" sx={{ fontWeight: "light" }}>
-          {activity.date}
+      <CardContent sx={{ p: 3 }}>
+        <Typography variant="h5" sx={{ mb: 0.75 }}>{activity.title}</Typography>
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: "primary.main", mb: 2 }}>
+          {formatActivityDate(activity.date)}
         </Typography>
         <Typography variant="body1">{activity.description}</Typography>
       </CardContent>
-      <CardActions>
+      <CardActions sx={{ px: 2, pb: 2, gap: 0.5, flexWrap: "wrap" }}>
         <Button color="primary" onClick={() => onOpenForm(activity.id)}>
           Edytuj
         </Button>

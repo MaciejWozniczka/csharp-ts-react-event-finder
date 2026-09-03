@@ -28,13 +28,16 @@ export default function ActivityDasboard({
 }: Props) {
   return (
     <Grid container spacing={3}>
-      <Grid size={7}>
+      <Grid size={{ xs: 12, md: 7 }}>
         <ActivityList
           activities={activities}
           onSelectActivity={onSelectActivity}
         />
       </Grid>
-      <Grid size={5} sx={{ alignSelf: "flex-start", position: "sticky", top: 24 }}>
+      <Grid
+        size={{ xs: 12, md: 5 }}
+        sx={{ alignSelf: "flex-start", position: { md: "sticky" }, top: 24 }}
+      >
         {selectedActivity && !editMode && (
           <ActivityDetail
             activity={selectedActivity}
