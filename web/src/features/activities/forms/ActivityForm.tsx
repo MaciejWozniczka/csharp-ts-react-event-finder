@@ -12,11 +12,25 @@ type FormValues = Pick<
   "title" | "description" | "category" | "date" | "city" | "venue"
 >;
 
+const toDateTimeLocalValue = (value: string) => {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value.slice(0, 16);
+  }
+
+  const pad = (part: number) => part.toString().padStart(2, "0");
+
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+    date.getDate(),
+  )}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+};
+
 const getFormValues = (activity?: Activity): FormValues => ({
   title: activity?.title ?? "",
   description: activity?.description ?? "",
   category: activity?.category ?? "",
-  date: activity?.date ? activity.date.slice(0, 10) : "",
+  date: activity?.date ? toDateTimeLocalValue(activity.date) : "",
   city: activity?.city ?? "",
   venue: activity?.venue ?? "",
 });
@@ -89,9 +103,10 @@ export default function ActivityForm({ activity, onCloseForm }: Props) {
         <TextField
           name="date"
           label="Data"
-          type="date"
+          type="datetime-local"
           value={values.date}
           onChange={handleChange}
+          slotProps={{ inputLabel: { shrink: true } }}
         />
         <TextField
           name="city"
