@@ -20,7 +20,7 @@ export default function ActivityDetail({
   onCancelActivity,
   onOpenForm,
 }: Props) {
-  const { activities } = useActivities();
+  const { activities, deleteActivity } = useActivities();
   const activity = activities?.find((a) => a.id === selectedActivity.id);
 
   if (!activity) {
@@ -53,7 +53,12 @@ export default function ActivityDetail({
         <Button color="primary" onClick={() => onOpenForm(activity.id)}>
           Edytuj
         </Button>
-        <Button color="error">Usuń</Button>
+        <Button
+          color="error"
+          onClick={() => deleteActivity.mutate(activity.id)}
+        >
+          Usuń
+        </Button>
         <Button color="inherit" onClick={onCancelActivity}>
           Wyjdź
         </Button>
