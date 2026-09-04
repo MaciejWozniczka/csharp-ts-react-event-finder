@@ -5,6 +5,7 @@ import { useActivities } from "../../../lib/hooks/useActivities";
 type Props = {
   activity?: Activity;
   onCloseForm: () => void;
+  onCreateActivity: (activity: Activity) => void;
 };
 
 type FormValues = Pick<
@@ -35,8 +36,12 @@ const getFormValues = (activity?: Activity): FormValues => ({
   venue: activity?.venue ?? "",
 });
 
-export default function ActivityForm({ activity, onCloseForm }: Props) {
-  const { updateActivity } = useActivities();
+export default function ActivityForm({
+  activity,
+  onCloseForm,
+  onCreateActivity,
+}: Props) {
+  const { updateActivity, createActivity } = useActivities();
 
   const [values, setValues] = useState(() => getFormValues(activity));
 
@@ -61,6 +66,9 @@ export default function ActivityForm({ activity, onCloseForm }: Props) {
       data.id = activity.id;
       await updateActivity.mutateAsync(data as unknown as Activity);
       onCloseForm();
+    } else {
+      const id = await createActivity.mutateAsync(data as unknown as Activity);
+      onCreateActivity({ ...data, id } as Activity);
     }
   };
 
@@ -125,7 +133,7 @@ export default function ActivityForm({ activity, onCloseForm }: Props) {
             type="submit"
             variant="contained"
             color="primary"
-            loading={updateActivity.isPending}
+            loading={updateActivity.isPending || createActivity.isPending}
           >
             Zapisz
           </Button>

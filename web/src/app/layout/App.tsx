@@ -37,6 +37,11 @@ function App() {
     setEditMode(false);
   };
 
+  const handleCreateActivity = (activity: Activity) => {
+    setSelectedActivity(activity);
+    setEditMode(false);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -71,6 +76,7 @@ function App() {
               editMode={editMode}
               onOpenForm={handleOpenForm}
               onCloseForm={handleCloseForm}
+              onCreateActivity={handleCreateActivity}
             />
           )}
         </Container>
