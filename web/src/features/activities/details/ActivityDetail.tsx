@@ -7,20 +7,26 @@ import {
   Button,
 } from "@mui/material";
 import { formatActivityDate } from "../../../app/utils/formatDate";
+import { useActivities } from "../../../lib/hooks/useActivities";
 
 type Props = {
-  activity: Activity;
+  selectedActivity: Activity;
   onCancelActivity: () => void;
   onOpenForm: (id: string) => void;
-  onDeleteActivity: (id: string) => void;
 };
 
 export default function ActivityDetail({
-  activity,
+  selectedActivity,
   onCancelActivity,
   onOpenForm,
-  onDeleteActivity,
 }: Props) {
+  const { activities } = useActivities();
+  const activity = activities?.find((a) => a.id === selectedActivity.id);
+
+  if (!activity) {
+    return null;
+  }
+
   return (
     <Card
       elevation={0}
@@ -32,8 +38,13 @@ export default function ActivityDetail({
         alt={activity.category}
       />
       <CardContent sx={{ p: 3 }}>
-        <Typography variant="h5" sx={{ mb: 0.75 }}>{activity.title}</Typography>
-        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: "primary.main", mb: 2 }}>
+        <Typography variant="h5" sx={{ mb: 0.75 }}>
+          {activity.title}
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          sx={{ fontWeight: 700, color: "primary.main", mb: 2 }}
+        >
           {formatActivityDate(activity.date)}
         </Typography>
         <Typography variant="body1">{activity.description}</Typography>
@@ -42,9 +53,7 @@ export default function ActivityDetail({
         <Button color="primary" onClick={() => onOpenForm(activity.id)}>
           Edytuj
         </Button>
-        <Button color="error" onClick={() => onDeleteActivity(activity.id)}>
-          Usuń
-        </Button>
+        <Button color="error">Usuń</Button>
         <Button color="inherit" onClick={onCancelActivity}>
           Wyjdź
         </Button>

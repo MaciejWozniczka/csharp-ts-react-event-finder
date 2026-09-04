@@ -1,11 +1,10 @@
 import { Paper, Typography, Box, TextField, Button } from "@mui/material";
-import { useState } from "react";
-import type { ChangeEvent, SubmitEvent } from "react";
+import { useState, type ChangeEvent, type SubmitEvent } from "react";
+import { useActivities } from "../../../lib/hooks/useActivities";
 
 type Props = {
   activity?: Activity;
   onCloseForm: () => void;
-  onSubmitForm: (activity: Activity) => void;
 };
 
 type FormValues = Pick<
@@ -22,11 +21,9 @@ const getFormValues = (activity?: Activity): FormValues => ({
   venue: activity?.venue ?? "",
 });
 
-export default function ActivityForm({
-  activity,
-  onCloseForm,
-  onSubmitForm,
-}: Props) {
+export default function ActivityForm({ activity, onCloseForm }: Props) {
+  const { updateActivity } = useActivities();
+
   const [values, setValues] = useState(() => getFormValues(activity));
 
   const handleChange = (
@@ -36,7 +33,7 @@ export default function ActivityForm({
     setValues((currentValues) => ({ ...currentValues, [name]: value }));
   };
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -48,15 +45,18 @@ export default function ActivityForm({
 
     if (activity) {
       data.id = activity.id;
+      await updateActivity.mutateAsync(data as unknown as Activity);
+      onCloseForm();
     }
-
-    onSubmitForm(data as unknown as Activity);
   };
 
   return (
     <Paper
       elevation={0}
-      sx={{ border: "1px solid rgba(7, 92, 45, 0.12)", padding: { xs: 2.5, md: 3.5 } }}
+      sx={{
+        border: "1px solid rgba(7, 92, 45, 0.12)",
+        padding: { xs: 2.5, md: 3.5 },
+      }}
     >
       <Typography variant="h5" gutterBottom color="primary">
         {activity ? "Edytuj aktywność" : "Utwórz aktywność"}
@@ -106,7 +106,12 @@ export default function ActivityForm({
           onChange={handleChange}
         />
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 3 }}>
-          <Button type="submit" variant="contained" color="primary">
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            loading={updateActivity.isPending}
+          >
             Zapisz
           </Button>
           <Button color="inherit" onClick={onCloseForm}>

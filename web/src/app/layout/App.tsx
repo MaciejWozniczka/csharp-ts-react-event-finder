@@ -5,27 +5,21 @@ import {
   ThemeProvider,
   Typography,
 } from "@mui/material";
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import NavBar from "./NavBar";
 import ActivityDasboard from "../../features/activities/dashboard/ActivityDasboard";
 import theme from "./theme";
+import { useActivities } from "../../lib/hooks/useActivities";
 
 function App() {
-  const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<
     Activity | undefined
   >(undefined);
   const [editMode, setEditMode] = useState(false);
-
-  useEffect(() => {
-    axios
-      .get<Activity[]>("https://localhost:5001/api/activities")
-      .then((response) => setActivities(response.data));
-  }, []);
+  const { activities, isPending } = useActivities();
 
   const handleSelectActivity = (id: string) => {
-    setSelectedActivity(activities.find((activity) => activity.id === id));
+    setSelectedActivity(activities!.find((activity) => activity.id === id));
     setEditMode(false);
   };
 
@@ -41,39 +35,6 @@ function App() {
 
   const handleCloseForm = () => {
     setEditMode(false);
-  };
-
-  const handleDeleteActivity = (id: string) => {
-    setActivities((currentActivities) =>
-      currentActivities.filter((activity) => activity.id !== id),
-    );
-
-    if (selectedActivity?.id === id) {
-      setSelectedActivity(undefined);
-      setEditMode(false);
-    }
-  };
-
-  const handleSubmitForm = (activity: Activity) => {
-    const existingActivity = activities.find(
-      (currentActivity) => currentActivity.id === activity.id,
-    );
-    const savedActivity = existingActivity
-      ? { ...existingActivity, ...activity }
-      : { ...activity, id: crypto.randomUUID() };
-
-    setActivities((currentActivities) =>
-      existingActivity
-        ? currentActivities.map((currentActivity) =>
-            currentActivity.id === savedActivity.id
-              ? savedActivity
-              : currentActivity,
-          )
-        : [...currentActivities, savedActivity],
-    );
-
-    setEditMode(false);
-    setSelectedActivity(savedActivity);
   };
 
   return (
@@ -97,17 +58,21 @@ function App() {
               Odkrywaj wydarzenia, zapisuj pomysły i planuj swój czas.
             </Typography>
           </Box>
-          <ActivityDasboard
-            activities={activities}
-            onSelectActivity={handleSelectActivity}
-            onDeleteActivity={handleDeleteActivity}
-            onCancelSelectActivity={handleCancelSelectActivity}
-            selectedActivity={selectedActivity!}
-            editMode={editMode}
-            onOpenForm={handleOpenForm}
-            onCloseForm={handleCloseForm}
-            onSubmitForm={handleSubmitForm}
-          />
+          {!activities && isPending ? (
+            <Typography variant="body1" color="text.secondary">
+              Ładowanie wydarzeń...
+            </Typography>
+          ) : (
+            <ActivityDasboard
+              activities={activities ?? []}
+              onSelectActivity={handleSelectActivity}
+              onCancelSelectActivity={handleCancelSelectActivity}
+              selectedActivity={selectedActivity!}
+              editMode={editMode}
+              onOpenForm={handleOpenForm}
+              onCloseForm={handleCloseForm}
+            />
+          )}
         </Container>
       </Box>
     </ThemeProvider>

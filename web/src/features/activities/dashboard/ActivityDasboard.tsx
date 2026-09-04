@@ -6,25 +6,21 @@ import ActivityForm from "../forms/ActivityForm";
 type Props = {
   activities: Activity[];
   onSelectActivity: (id: string) => void;
-  onDeleteActivity: (id: string) => void;
   onCancelSelectActivity: () => void;
   selectedActivity: Activity;
   editMode: boolean;
   onOpenForm: (id: string) => void;
   onCloseForm: () => void;
-  onSubmitForm: (activity: Activity) => void;
 };
 
 export default function ActivityDasboard({
   activities,
   onSelectActivity,
-  onDeleteActivity,
   onCancelSelectActivity,
   selectedActivity,
   editMode,
   onOpenForm,
   onCloseForm,
-  onSubmitForm,
 }: Props) {
   return (
     <Grid container spacing={3}>
@@ -45,18 +41,13 @@ export default function ActivityDasboard({
       >
         {selectedActivity && !editMode && (
           <ActivityDetail
-            activity={selectedActivity}
+            selectedActivity={selectedActivity}
             onCancelActivity={onCancelSelectActivity}
             onOpenForm={onOpenForm}
-            onDeleteActivity={onDeleteActivity}
           />
         )}
         {editMode && (
-          <ActivityForm
-            activity={selectedActivity}
-            onCloseForm={onCloseForm}
-            onSubmitForm={onSubmitForm}
-          />
+          <ActivityForm activity={selectedActivity} onCloseForm={onCloseForm} />
         )}
       </Grid>
     </Grid>
