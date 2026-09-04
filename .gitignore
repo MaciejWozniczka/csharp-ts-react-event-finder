@@ -23,4 +23,3 @@ api/EventFinder.Api/EventFinder.db-wal
 api/EventFinder.Api/appsettings.json
 api/EventFinder.AppHost/appsettings.json
 /api/EventFinder.Api/appsettings.Development.json
-node_modules/
