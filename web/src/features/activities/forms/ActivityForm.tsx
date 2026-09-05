@@ -1,17 +1,6 @@
 import { Paper, Typography, Box, TextField, Button } from "@mui/material";
-import { useState, type ChangeEvent, type SubmitEvent } from "react";
+import { type SubmitEvent } from "react";
 import { useActivities } from "../../../lib/hooks/useActivities";
-
-type Props = {
-  activity?: Activity;
-  onCloseForm: () => void;
-  onCreateActivity: (activity: Activity) => void;
-};
-
-type FormValues = Pick<
-  Activity,
-  "title" | "description" | "category" | "date" | "city" | "venue"
->;
 
 const toDateTimeLocalValue = (value: string) => {
   const date = new Date(value);
@@ -27,30 +16,9 @@ const toDateTimeLocalValue = (value: string) => {
   )}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 };
 
-const getFormValues = (activity?: Activity): FormValues => ({
-  title: activity?.title ?? "",
-  description: activity?.description ?? "",
-  category: activity?.category ?? "",
-  date: activity?.date ? toDateTimeLocalValue(activity.date) : "",
-  city: activity?.city ?? "",
-  venue: activity?.venue ?? "",
-});
-
-export default function ActivityForm({
-  activity,
-  onCloseForm,
-  onCreateActivity,
-}: Props) {
+export default function ActivityForm() {
   const { updateActivity, createActivity } = useActivities();
-
-  const [values, setValues] = useState(() => getFormValues(activity));
-
-  const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = event.target;
-    setValues((currentValues) => ({ ...currentValues, [name]: value }));
-  };
+  const activity = {} as Activity;
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -65,10 +33,8 @@ export default function ActivityForm({
     if (activity) {
       data.id = activity.id;
       await updateActivity.mutateAsync(data as unknown as Activity);
-      onCloseForm();
     } else {
-      const id = await createActivity.mutateAsync(data as unknown as Activity);
-      onCreateActivity({ ...data, id } as Activity);
+      await createActivity.mutateAsync(data as unknown as Activity);
     }
   };
 
@@ -88,45 +54,33 @@ export default function ActivityForm({
         sx={{ display: "flex", flexDirection: "column", gap: 3 }}
         onSubmit={handleSubmit}
       >
-        <TextField
-          name="title"
-          label="Tytuł"
-          value={values.title}
-          onChange={handleChange}
-        />
+        <TextField name="title" label="Tytuł" defaultValue={activity?.title} />
         <TextField
           name="description"
           label="Opis"
           multiline
           rows={4}
-          value={values.description}
-          onChange={handleChange}
+          defaultValue={activity?.description}
         />
         <TextField
           name="category"
           label="Kategoria"
-          value={values.category}
-          onChange={handleChange}
+          defaultValue={activity?.category}
         />
         <TextField
           name="date"
           label="Data"
           type="datetime-local"
-          value={values.date}
-          onChange={handleChange}
+          defaultValue={
+            activity?.date ? toDateTimeLocalValue(activity.date) : ""
+          }
           slotProps={{ inputLabel: { shrink: true } }}
         />
-        <TextField
-          name="city"
-          label="Miasto"
-          value={values.city}
-          onChange={handleChange}
-        />
+        <TextField name="city" label="Miasto" defaultValue={activity?.city} />
         <TextField
           name="venue"
           label="Miejsce"
-          value={values.venue}
-          onChange={handleChange}
+          defaultValue={activity?.venue}
         />
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 3 }}>
           <Button
@@ -137,7 +91,7 @@ export default function ActivityForm({
           >
             Zapisz
           </Button>
-          <Button color="inherit" onClick={onCloseForm}>
+          <Button color="inherit" onClick={() => {}}>
             Anuluj
           </Button>
         </Box>

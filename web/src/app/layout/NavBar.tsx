@@ -8,11 +8,7 @@ import {
 } from "@mui/material";
 import { Group } from "@mui/icons-material";
 
-type Props = {
-  onOpenForm: () => void;
-};
-
-export default function NavBar({ onOpenForm }: Props) {
+export default function NavBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -41,22 +37,13 @@ export default function NavBar({ onOpenForm }: Props) {
               </Box>
             </Box>
             <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
-              <Button
-                color="inherit"
-                sx={{ fontSize: "1rem", px: 1.25 }}
-              >
+              <Button color="inherit" sx={{ fontSize: "1rem", px: 1.25 }}>
                 Aktywności
               </Button>
-              <Button
-                color="inherit"
-                sx={{ fontSize: "1rem", px: 1.25 }}
-              >
+              <Button color="inherit" sx={{ fontSize: "1rem", px: 1.25 }}>
                 O nas
               </Button>
-              <Button
-                color="inherit"
-                sx={{ fontSize: "1rem", px: 1.25 }}
-              >
+              <Button color="inherit" sx={{ fontSize: "1rem", px: 1.25 }}>
                 Kontakt
               </Button>
             </Box>
@@ -64,7 +51,7 @@ export default function NavBar({ onOpenForm }: Props) {
               size="large"
               variant="contained"
               color="secondary"
-              onClick={() => onOpenForm()}
+              onClick={() => {}}
               sx={{ boxShadow: "none", px: { xs: 1.5, md: 2.25 } }}
             >
               Utwórz aktywność
