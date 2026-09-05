@@ -10,6 +10,7 @@ public class GetActivityList
         {
             return await context
                 .Activities
+                .OrderBy(a => a.Date)
                 .ToListAsync(cancellationToken);
         }
     }
