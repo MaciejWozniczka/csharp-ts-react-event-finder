@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { formatActivityDate } from "../../../app/utils/formatDate";
+import { Link } from "react-router";
 
 type Props = {
   activity: Activity;
@@ -47,10 +48,11 @@ export default function ActivityCard({ activity }: Props) {
       >
         <Chip label={activity.category} color="primary" variant="outlined" />
         <Button
+          component={Link}
+          to={`/activities/${activity.id}`}
           size="medium"
           variant="contained"
           color="primary"
-          onClick={() => {}}
         >
           Pokaż szczegóły
         </Button>

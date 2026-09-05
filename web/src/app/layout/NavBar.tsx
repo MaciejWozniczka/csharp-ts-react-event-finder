@@ -68,7 +68,9 @@ export default function NavBar() {
             }}
           >
             <MenuItemLink to="/activities">Aktywności</MenuItemLink>
-            <MenuItemLink to="/create-activity">Utwórz aktywność</MenuItemLink>
+            <MenuItemLink to="/activities/create">
+              Utwórz aktywność
+            </MenuItemLink>
           </Box>
           <Button
             color="inherit"

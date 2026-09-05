@@ -7,21 +7,12 @@ import {
   Button,
 } from "@mui/material";
 import { formatActivityDate } from "../../../app/utils/formatDate";
-import { useActivities } from "../../../lib/hooks/useActivities";
+import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
-type Props = {
-  selectedActivity: Activity;
-  onCancelActivity: () => void;
-  onOpenForm: (id: string) => void;
-};
-
-export default function ActivityDetail({
-  selectedActivity,
-  onCancelActivity,
-  onOpenForm,
-}: Props) {
-  const { activities, deleteActivity } = useActivities();
-  const activity = activities?.find((a) => a.id === selectedActivity.id);
+export default function ActivityDetail() {
+  const navigate = useNavigate();
+  const activity = {} as Activity;
 
   if (!activity) {
     return null;
@@ -50,16 +41,17 @@ export default function ActivityDetail({
         <Typography variant="body1">{activity.description}</Typography>
       </CardContent>
       <CardActions sx={{ px: 2, pb: 2, gap: 0.5, flexWrap: "wrap" }}>
-        <Button color="primary" onClick={() => onOpenForm(activity.id)}>
+        <Button
+          component={Link}
+          to={`/activities/${activity.id}/edit`}
+          color="primary"
+        >
           Edytuj
         </Button>
-        <Button
-          color="error"
-          onClick={() => deleteActivity.mutate(activity.id)}
-        >
+        <Button color="error" onClick={() => {}}>
           Usuń
         </Button>
-        <Button color="inherit" onClick={onCancelActivity}>
+        <Button color="inherit" onClick={() => navigate("/activities")}>
           Wyjdź
         </Button>
       </CardActions>
