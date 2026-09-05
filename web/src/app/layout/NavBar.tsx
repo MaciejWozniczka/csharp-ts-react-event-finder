@@ -6,59 +6,85 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Group } from "@mui/icons-material";
+import { AccountCircleOutlined, Group } from "@mui/icons-material";
+import MenuItemLink from "../shared/components/MenuItemLink";
 
 export default function NavBar() {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        position="static"
-        sx={{
-          backgroundImage:
-            "linear-gradient(45deg, #003113 30%, #025e12 55%, #056b16 80%)",
-          boxShadow: "0 10px 28px rgba(0, 49, 19, 0.22)",
-        }}
-      >
-        <Container maxWidth="xl">
-          <Toolbar
+    <AppBar
+      position="static"
+      elevation={0}
+      sx={{
+        bgcolor: "#064426",
+        color: "#f1f7f2",
+        borderBottom: "1px solid rgba(222, 240, 226, 0.16)",
+        boxShadow: "0 4px 16px rgba(0, 49, 19, 0.10)",
+      }}
+    >
+      <Container maxWidth="xl">
+        <Toolbar
+          disableGutters
+          sx={{
+            minHeight: { xs: 72, sm: 80 },
+            flexWrap: "wrap",
+            gap: { xs: 1, sm: 2 },
+            py: { xs: 1.5, sm: 1 },
+          }}
+        >
+          <MenuItemLink
+            to="/"
             sx={{
-              minHeight: { xs: 72, md: 82 },
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 2,
+              px: 0.5,
+              gap: 1.25,
+              mr: "auto",
+              "&.active": { backgroundColor: "transparent" },
             }}
           >
-            <Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Group fontSize="large" />
-                <Typography variant="h4" sx={{ fontWeight: 800 }}>
-                  Event Finder
-                </Typography>
-              </Box>
-            </Box>
-            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
-              <Button color="inherit" sx={{ fontSize: "1rem", px: 1.25 }}>
-                Aktywności
-              </Button>
-              <Button color="inherit" sx={{ fontSize: "1rem", px: 1.25 }}>
-                O nas
-              </Button>
-              <Button color="inherit" sx={{ fontSize: "1rem", px: 1.25 }}>
-                Kontakt
-              </Button>
-            </Box>
-            <Button
-              size="large"
-              variant="contained"
-              color="secondary"
-              onClick={() => {}}
-              sx={{ boxShadow: "none", px: { xs: 1.5, md: 2.25 } }}
+            <Group sx={{ fontSize: 30, color: "#f5c66b" }} />
+            <Typography
+              component="span"
+              sx={{
+                fontSize: { xs: "1.2rem", sm: "1.45rem" },
+                fontWeight: 800,
+                letterSpacing: "-0.035em",
+              }}
             >
-              Utwórz aktywność
-            </Button>
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </Box>
+              Event Finder
+            </Typography>
+          </MenuItemLink>
+          <Box
+            component="nav"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              order: { xs: 3, md: 0 },
+              width: { xs: "100%", md: "auto" },
+              borderTop: {
+                xs: "1px solid rgba(222, 240, 226, 0.16)",
+                md: "none",
+              },
+              pt: { xs: 1, md: 0 },
+            }}
+          >
+            <MenuItemLink to="/activities">Aktywności</MenuItemLink>
+            <MenuItemLink to="/create-activity">Utwórz aktywność</MenuItemLink>
+          </Box>
+          <Button
+            color="inherit"
+            startIcon={<AccountCircleOutlined />}
+            sx={{
+              minHeight: 44,
+              px: 1.5,
+              ml: { md: 1 },
+              whiteSpace: "nowrap",
+              "&:hover": { bgcolor: "rgba(240, 250, 243, 0.10)" },
+            }}
+          >
+            Użytkownik
+          </Button>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 }

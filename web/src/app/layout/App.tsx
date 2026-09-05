@@ -14,7 +14,7 @@ function App() {
         }}
       >
         <NavBar />
-        <Container maxWidth="xl" sx={{ mt: { xt: 3 } }}>
+        <Container maxWidth="xl" sx={{ mt: { xs: 3, md: 4 } }}>
           <Outlet />
         </Container>
       </Box>
