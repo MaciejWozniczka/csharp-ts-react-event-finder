@@ -6,15 +6,28 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
+import { useState } from "react";
+import ConfirmDialog from "../../../app/shared/components/ConfirmDialog";
 import { formatActivityDate } from "../../../app/utils/formatDate";
 import { Link, useParams } from "react-router";
 import { useNavigate } from "react-router";
 import { useActivities } from "../../../lib/hooks/useActivities";
 
 export default function ActivityDetail() {
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
-  const { activity, isLoadingActivity } = useActivities(id ?? "");
+  const { deleteActivity, activity, isLoadingActivity } = useActivities(
+    id ?? "",
+  );
+
+  const handleDelete = () => {
+    if (activity) {
+      deleteActivity.mutate(activity.id, {
+        onSuccess: () => navigate("/activities"),
+      });
+    }
+  };
 
   if (isLoadingActivity) {
     return <Typography>Ładowanie...</Typography>;
@@ -54,13 +67,28 @@ export default function ActivityDetail() {
         >
           Edytuj
         </Button>
-        <Button color="error" onClick={() => {}}>
+        <Button
+          color="error"
+          onClick={() => setIsDeleteDialogOpen(true)}
+          loading={deleteActivity.isPending}
+        >
           Usuń
         </Button>
         <Button color="inherit" onClick={() => navigate("/activities")}>
           Wyjdź
         </Button>
       </CardActions>
+      <ConfirmDialog
+        open={isDeleteDialogOpen}
+        title="Usuń wydarzenie"
+        message={`Czy na pewno chcesz usunąć wydarzenie „${activity.title}”?`}
+        confirmText="Usuń"
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={() => {
+          setIsDeleteDialogOpen(false);
+          handleDelete();
+        }}
+      />
     </Card>
   );
 }
