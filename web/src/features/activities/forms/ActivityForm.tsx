@@ -1,24 +1,14 @@
 import { Paper, Typography, Box, TextField, Button } from "@mui/material";
 import { type SubmitEvent } from "react";
 import { useActivities } from "../../../lib/hooks/useActivities";
-
-const toDateTimeLocalValue = (value: string) => {
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return value.slice(0, 16);
-  }
-
-  const pad = (part: number) => part.toString().padStart(2, "0");
-
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
-    date.getDate(),
-  )}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-};
+import { toDateTimeLocalValue } from "../../../lib/features/ToDateTimeLocalValue";
+import { useNavigate, useParams } from "react-router";
 
 export default function ActivityForm() {
-  const { updateActivity, createActivity } = useActivities();
-  const activity = {} as Activity;
+  const { id } = useParams();
+  const { updateActivity, createActivity, activity, isLoadingActivity } =
+    useActivities(id);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,10 +23,15 @@ export default function ActivityForm() {
     if (activity) {
       data.id = activity.id;
       await updateActivity.mutateAsync(data as unknown as Activity);
+      navigate(`/activities/${activity.id}`);
     } else {
       await createActivity.mutateAsync(data as unknown as Activity);
     }
   };
+
+  if (isLoadingActivity) {
+    return <Typography>Ładowanie...</Typography>;
+  }
 
   return (
     <Paper

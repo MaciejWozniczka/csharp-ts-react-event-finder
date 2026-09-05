@@ -7,12 +7,18 @@ import {
   Button,
 } from "@mui/material";
 import { formatActivityDate } from "../../../app/utils/formatDate";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import { useNavigate } from "react-router";
+import { useActivities } from "../../../lib/hooks/useActivities";
 
 export default function ActivityDetail() {
   const navigate = useNavigate();
-  const activity = {} as Activity;
+  const { id } = useParams();
+  const { activity, isLoadingActivity } = useActivities(id ?? "");
+
+  if (isLoadingActivity) {
+    return <Typography>Ładowanie...</Typography>;
+  }
 
   if (!activity) {
     return null;
