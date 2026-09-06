@@ -21,7 +21,7 @@ export default function ActivityCard({ activity }: Props) {
   const isHost = false;
   const isGoing = false;
   const label = isHost ? "Jesteś organizatorem" : "Bierzesz udział";
-  const isCancelled = false;
+  const isCancelled = activity.isCancelled;
   const color = isHost ? "secondary" : isGoing ? "warning" : "default";
 
   return (
@@ -43,9 +43,10 @@ export default function ActivityCard({ activity }: Props) {
         <CardHeader
           avatar={<Avatar sx={{ height: 80, width: 80 }} />}
           title={activity.title}
-          titleTypographyProps={{
-            fontWeight: "bold",
-            fontSize: 20,
+          slotProps={{
+            title: {
+              sx: { fontWeight: "bold", fontSize: 20 },
+            },
           }}
           subheader={
             <>
@@ -58,7 +59,7 @@ export default function ActivityCard({ activity }: Props) {
             <Chip label={label} color={color} sx={{ borderRadius: 2 }} />
           )}
           {isCancelled && (
-            <Chip label="Odwołany" color="error" sx={{ borderRadius: 2 }} />
+            <Chip label="Odwołane" color="error" sx={{ borderRadius: 2 }} />
           )}
         </Box>
       </Box>

@@ -31,13 +31,13 @@ export default function ActivityFilters() {
           </Typography>
           <MenuList>
             <MenuItem>
-              <ListItemText primary="All Events" />
+              <ListItemText primary="Wszystkie wydarzenia" />
             </MenuItem>
             <MenuItem>
-              <ListItemText primary="I'm going" />
+              <ListItemText primary="Biorę udział" />
             </MenuItem>
             <MenuItem>
-              <ListItemText primary="I'm hosting" />
+              <ListItemText primary="Organizuję" />
             </MenuItem>
           </MenuList>
         </Box>

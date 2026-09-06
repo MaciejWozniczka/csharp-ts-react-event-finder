@@ -27,7 +27,7 @@ export default function ActivityDetailsHeader({ activity }: Props) {
         <Badge
           sx={{ position: "absolute", left: 40, top: 20, zIndex: 1000 }}
           color="error"
-          badgeContent="Cancelled"
+          badgeContent="Odwołane"
         />
       )}
       <CardMedia
@@ -76,21 +76,25 @@ export default function ActivityDetailsHeader({ activity }: Props) {
                 variant="contained"
                 color={isCancelled ? "success" : "error"}
                 onClick={() =>
-                  updateActivity.mutate({ ...activity, isCancelled: !isCancelled })
+                  updateActivity.mutate({
+                    ...activity,
+                    isCancelled: !isCancelled,
+                  })
                 }
                 loading={updateActivity.isPending}
               >
                 {isCancelled ? "Przywróć wydarzenie" : "Anuluj wydarzenie"}
               </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                component={Link}
-                to={`/activities/${activity.id}/edit`}
-                disabled={isCancelled}
-              >
-                Zarządzaj wydarzeniem
-              </Button>
+              {!isCancelled && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component={Link}
+                  to={`/activities/${activity.id}/edit`}
+                >
+                  Zarządzaj wydarzeniem
+                </Button>
+              )}
             </>
           ) : (
             <Button

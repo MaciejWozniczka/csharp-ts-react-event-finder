@@ -1,8 +1,15 @@
-import { Paper, Typography, Box, TextField, Button } from "@mui/material";
+import { Paper, Typography, Box, TextField, Button, Alert } from "@mui/material";
 import { type SubmitEvent } from "react";
 import { useActivities } from "../../../lib/hooks/useActivities";
 import { useNavigate, useParams } from "react-router";
-import { formatActivityDate } from "../../../app/utils/formatDate";
+
+function toDateTimeLocalValue(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+
+  const pad = (part: number) => part.toString().padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
 
 export default function ActivityForm() {
   const { id } = useParams();
@@ -10,7 +17,7 @@ export default function ActivityForm() {
     useActivities(id);
   const navigate = useNavigate();
 
-  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -22,8 +29,9 @@ export default function ActivityForm() {
 
     if (activity) {
       data.id = activity.id;
-      await updateActivity.mutateAsync(data as unknown as Activity);
-      navigate(`/activities/${activity.id}`);
+      updateActivity.mutate(data as unknown as Activity, {
+        onSuccess: () => navigate(`/activities/${activity.id}`),
+      });
     } else {
       createActivity.mutate(data as unknown as Activity, {
         onSuccess: (id) => {
@@ -70,7 +78,8 @@ export default function ActivityForm() {
           name="date"
           label="Data"
           type="datetime-local"
-          defaultValue={activity?.date ? formatActivityDate(activity.date) : ""}
+          required
+          defaultValue={activity?.date ? toDateTimeLocalValue(activity.date) : ""}
           slotProps={{ inputLabel: { shrink: true } }}
         />
         <TextField name="city" label="Miasto" defaultValue={activity?.city} />
@@ -79,6 +88,11 @@ export default function ActivityForm() {
           label="Miejsce"
           defaultValue={activity?.venue}
         />
+        {(updateActivity.isError || createActivity.isError) && (
+          <Alert severity="error">
+            Nie udało się zapisać aktywności. Spróbuj ponownie.
+          </Alert>
+        )}
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 3 }}>
           <Button
             type="submit"
@@ -88,7 +102,12 @@ export default function ActivityForm() {
           >
             Zapisz
           </Button>
-          <Button color="inherit" onClick={() => {}}>
+          <Button
+            type="button"
+            color="inherit"
+            disabled={updateActivity.isPending || createActivity.isPending}
+            onClick={() => navigate(id ? `/activities/${id}` : "/activities")}
+          >
             Anuluj
           </Button>
         </Box>
