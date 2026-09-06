@@ -1,4 +1,4 @@
-export const toDateTimeLocalValue = (value: string) => {
+export const dateTimeLocalValue = (value: string) => {
   const date = new Date(value);
 
   if (Number.isNaN(date.getTime())) {
