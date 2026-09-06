@@ -19,7 +19,7 @@ export default function ActivityDetailsChat() {
           padding: 2,
         }}
       >
-        <Typography variant="h6">Chat about this event</Typography>
+        <Typography variant="h6">Dyskutuj na temat wydarzenia</Typography>
       </Box>
       <Card>
         <CardContent>
@@ -30,7 +30,7 @@ export default function ActivityDetailsChat() {
                 fullWidth
                 multiline
                 rows={2}
-                placeholder="Enter your comment (Enter to submit, SHIFT + Enter for new line)"
+                placeholder="Wpisz swój komentarz (Enter by zatwierdzić, SHIFT + Enter by przejść do nowej linii)"
               />
             </form>
           </div>
@@ -50,15 +50,15 @@ export default function ActivityDetailsChat() {
                     variant="subtitle1"
                     sx={{ fontWeight: "bold", textDecoration: "none" }}
                   >
-                    Bob
+                    Maciej
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
-                    2 hours ago
+                    2 godziny temu
                   </Typography>
                 </Box>
 
                 <Typography sx={{ whiteSpace: "pre-wrap" }}>
-                  Comment goes here
+                  Komentarze
                 </Typography>
               </Box>
             </Box>

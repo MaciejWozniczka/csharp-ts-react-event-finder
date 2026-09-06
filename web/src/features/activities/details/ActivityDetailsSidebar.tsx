@@ -24,7 +24,7 @@ export default function ActivityDetailsSidebar() {
           p: 2,
         }}
       >
-        <Typography variant="h6">2 people going</Typography>
+        <Typography variant="h6">2 osoby biorą udział</Typography>
       </Paper>
       <Paper sx={{ padding: 2 }}>
         <Grid container sx={{ alignItems: "center" }}>
@@ -35,7 +35,7 @@ export default function ActivityDetailsSidebar() {
                   <Avatar alt={"attendee name"} src={"/assets/user.png"} />
                 </ListItemAvatar>
                 <ListItemText>
-                  <Typography variant="h6">Bob</Typography>
+                  <Typography variant="h6">Maciej</Typography>
                 </ListItemText>
               </ListItem>
             </List>
@@ -59,7 +59,7 @@ export default function ActivityDetailsSidebar() {
             )}
             {following && (
               <Typography variant="body2" color="orange">
-                Following
+                Obserwowane
               </Typography>
             )}
           </Grid>

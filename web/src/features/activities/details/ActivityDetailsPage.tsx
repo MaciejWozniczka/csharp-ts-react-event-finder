@@ -10,9 +10,9 @@ export default function ActivityDetailsPage() {
   const { id } = useParams();
   const { activity, isLoadingActivity } = useActivities(id);
 
-  if (isLoadingActivity) return <div>Loading activity...</div>;
+  if (isLoadingActivity) return <div>Ładowanie wydarzenia...</div>;
 
-  if (!activity) return <div>Activity not found</div>;
+  if (!activity) return <div>Wydarzenie nie znalezione</div>;
 
   return (
     <Grid container spacing={3}>

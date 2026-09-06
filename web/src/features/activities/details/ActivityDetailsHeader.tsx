@@ -1,6 +1,6 @@
 import { Card, Badge, CardMedia, Box, Typography, Button } from "@mui/material";
 import { Link } from "react-router";
-import { dateTimeLocalValue } from "../../../lib/util/dateTimeLocalValue";
+import { formatActivityDate } from "../../../app/utils/formatDate";
 
 type Props = {
   activity: Activity;
@@ -55,15 +55,15 @@ export default function ActivityDetailsHeader({ activity }: Props) {
             {activity.title}
           </Typography>
           <Typography variant="subtitle1">
-            {dateTimeLocalValue(activity.date)}
+            {formatActivityDate(activity.date)}
           </Typography>
           <Typography variant="subtitle2">
-            Hosted by{" "}
+            Organizowane przez{" "}
             <Link
               to={`/profiles/username`}
               style={{ color: "white", fontWeight: "bold" }}
             >
-              Bob
+              Maciej
             </Link>
           </Typography>
         </Box>
@@ -75,7 +75,7 @@ export default function ActivityDetailsHeader({ activity }: Props) {
                 color={isCancelled ? "success" : "error"}
                 onClick={() => {}}
               >
-                {isCancelled ? "Re-activate Activity" : "Cancel Activity"}
+                {isCancelled ? "Przywróć wydarzenie" : "Anuluj wydarzenie"}
               </Button>
               <Button
                 variant="contained"
@@ -84,7 +84,7 @@ export default function ActivityDetailsHeader({ activity }: Props) {
                 to={`/manage/${activity.id}`}
                 disabled={isCancelled}
               >
-                Manage Event
+                Zarządzaj wydarzeniem
               </Button>
             </>
           ) : (
@@ -94,7 +94,7 @@ export default function ActivityDetailsHeader({ activity }: Props) {
               onClick={() => {}}
               disabled={isCancelled || loading}
             >
-              {isGoing ? "Cancel Attendance" : "Join Activity"}
+              {isGoing ? "Anuluj udział" : "Dołącz do wydarzenia"}
             </Button>
           )}
         </Box>
