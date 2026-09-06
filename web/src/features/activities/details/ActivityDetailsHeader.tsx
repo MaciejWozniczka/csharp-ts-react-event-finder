@@ -1,13 +1,15 @@
 import { Card, Badge, CardMedia, Box, Typography, Button } from "@mui/material";
 import { Link } from "react-router";
 import { formatActivityDate } from "../../../app/utils/formatDate";
+import { useActivities } from "../../../lib/hooks/useActivities";
 
 type Props = {
   activity: Activity;
 };
 
 export default function ActivityDetailsHeader({ activity }: Props) {
-  const isCancelled = false;
+  const { updateActivity } = useActivities(activity.id);
+  const isCancelled = activity.isCancelled;
   const isHost = true;
   const isGoing = true;
   const loading = false;
@@ -73,7 +75,10 @@ export default function ActivityDetailsHeader({ activity }: Props) {
               <Button
                 variant="contained"
                 color={isCancelled ? "success" : "error"}
-                onClick={() => {}}
+                onClick={() =>
+                  updateActivity.mutate({ ...activity, isCancelled: !isCancelled })
+                }
+                loading={updateActivity.isPending}
               >
                 {isCancelled ? "Przywróć wydarzenie" : "Anuluj wydarzenie"}
               </Button>
@@ -81,7 +86,7 @@ export default function ActivityDetailsHeader({ activity }: Props) {
                 variant="contained"
                 color="primary"
                 component={Link}
-                to={`/manage/${activity.id}`}
+                to={`/activities/${activity.id}/edit`}
                 disabled={isCancelled}
               >
                 Zarządzaj wydarzeniem

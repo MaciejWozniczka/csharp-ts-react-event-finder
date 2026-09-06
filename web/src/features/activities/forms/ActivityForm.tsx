@@ -1,8 +1,8 @@
 import { Paper, Typography, Box, TextField, Button } from "@mui/material";
 import { type SubmitEvent } from "react";
 import { useActivities } from "../../../lib/hooks/useActivities";
-import { dateTimeLocalValue } from "../../../lib/util/dateTimeLocalValue";
 import { useNavigate, useParams } from "react-router";
+import { formatActivityDate } from "../../../app/utils/formatDate";
 
 export default function ActivityForm() {
   const { id } = useParams();
@@ -70,7 +70,7 @@ export default function ActivityForm() {
           name="date"
           label="Data"
           type="datetime-local"
-          defaultValue={activity?.date ? dateTimeLocalValue(activity.date) : ""}
+          defaultValue={activity?.date ? formatActivityDate(activity.date) : ""}
           slotProps={{ inputLabel: { shrink: true } }}
         />
         <TextField name="city" label="Miasto" defaultValue={activity?.city} />
