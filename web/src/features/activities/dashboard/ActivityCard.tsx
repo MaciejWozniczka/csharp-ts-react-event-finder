@@ -1,44 +1,91 @@
 import {
+  Avatar,
+  Box,
   Button,
   Card,
-  CardActions,
   CardContent,
+  CardHeader,
   Chip,
+  Divider,
   Typography,
 } from "@mui/material";
 import { formatActivityDate } from "../../../app/utils/formatDate";
 import { Link } from "react-router";
+import { AccessTime, Place } from "@mui/icons-material";
 
 type Props = {
   activity: Activity;
 };
 
 export default function ActivityCard({ activity }: Props) {
+  const isHost = false;
+  const isGoing = false;
+  const label = isHost ? "Jesteś organizatorem" : "Bierzesz udział";
+  const isCancelled = false;
+  const color = isHost ? "secondary" : isGoing ? "warning" : "default";
+
   return (
     <Card
-      elevation={0}
+      elevation={3}
       sx={{
         border: "1px solid rgba(7, 92, 45, 0.12)",
-        transition: "transform 180ms ease-out, box-shadow 180ms ease-out",
-        "&:hover": {
-          transform: "translateY(-3px)",
-          boxShadow: "0 14px 28px rgba(20, 57, 35, 0.10)",
-        },
+        borderRadius: 3,
+        overflow: "hidden",
       }}
     >
-      <CardContent sx={{ p: { xs: 2.5, md: 3 }, pb: 1.5 }}>
-        <Typography variant="h5" sx={{ mb: 0.75 }}>
-          {activity.title}
-        </Typography>
-        <Typography sx={{ color: "primary.main", fontWeight: 700, mb: 2 }}>
-          {formatActivityDate(activity.date)}
-        </Typography>
-        <Typography variant="body2">{activity.description}</Typography>
-        <Typography variant="subtitle1" sx={{ mt: 2, color: "text.secondary" }}>
-          {activity.city} / {activity.venue}
-        </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <CardHeader
+          avatar={<Avatar sx={{ height: 80, width: 80 }} />}
+          title={activity.title}
+          titleTypographyProps={{
+            fontWeight: "bold",
+            fontSize: 20,
+          }}
+          subheader={
+            <>
+              Organizowane przez <Link to={`/profile/bob`}>Maciej</Link>
+            </>
+          }
+        />
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mr: 2 }}>
+          {(isHost || isGoing) && (
+            <Chip label={label} color={color} sx={{ borderRadius: 2 }} />
+          )}
+          {isCancelled && (
+            <Chip label="Odwołany" color="error" sx={{ borderRadius: 2 }} />
+          )}
+        </Box>
+      </Box>
+      <Divider sx={{ mb: 3 }} />
+      <CardContent sx={{ p: 3 }}>
+        <Box sx={{ display: "flex", alignItems: "center", mb: 3, px: 3 }}>
+          <AccessTime sx={{ mr: 1 }} />
+          <Typography variant="body2">
+            {formatActivityDate(activity.date)}
+          </Typography>
+          <Place sx={{ ml: 3, mr: 1 }} />
+          <Typography variant="body2">{activity.venue}</Typography>
+        </Box>
+        <Divider />
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            backgroundColor: "grey.200",
+            py: 3,
+            pl: 3,
+          }}
+        >
+          Uczestnicy
+        </Box>
       </CardContent>
-      <CardActions
+      <CardContent
         sx={{
           display: "flex",
           justifyContent: "space-between",
@@ -46,17 +93,17 @@ export default function ActivityCard({ activity }: Props) {
           px: { xs: 2.5, md: 3 },
         }}
       >
-        <Chip label={activity.category} color="primary" variant="outlined" />
+        <Typography variant="body2">{activity.description}</Typography>
         <Button
           component={Link}
           to={`/activities/${activity.id}`}
           size="medium"
           variant="contained"
-          color="primary"
+          sx={{ display: "flex", justifySelf: "self-end", borderRadius: 3 }}
         >
           Pokaż szczegóły
         </Button>
-      </CardActions>
+      </CardContent>
     </Card>
   );
 }
