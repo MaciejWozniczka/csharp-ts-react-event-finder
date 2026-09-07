@@ -1,117 +1,232 @@
-import { Paper, Typography, Box, TextField, Button, Alert } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  Box,
+  TextField,
+  Button,
+  Alert,
+  Divider,
+  MenuItem,
+} from "@mui/material";
+import { ArrowBack, Check } from "@mui/icons-material";
 import { type SubmitEvent } from "react";
 import { useActivities } from "../../../lib/hooks/useActivities";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
+import { categories } from "../../../app/utils/categories";
+import ActivityLoadState from "../../../app/shared/components/ActivityLoadState";
 
 function toDateTimeLocalValue(value: string): string {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
-
   const pad = (part: number) => part.toString().padStart(2, "0");
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
 export default function ActivityForm() {
   const { id } = useParams();
-  const { updateActivity, createActivity, activity, isLoadingActivity } =
-    useActivities(id);
+  const {
+    updateActivity,
+    createActivity,
+    activity,
+    isLoadingActivity,
+    activityError,
+    refetchActivity,
+  } = useActivities(id);
   const navigate = useNavigate();
+  const saving = updateActivity.isPending || createActivity.isPending;
+  const backTo = id ? `/activities/${id}` : "/activities";
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    if (saving || (id && !activity)) return;
     const formData = new FormData(event.currentTarget);
-
-    const data: { [key: string]: string } = {};
-    formData.forEach((value, key) => {
-      data[key] = value as string;
-    });
-
-    if (activity) {
-      data.id = activity.id;
-      updateActivity.mutate(data as unknown as Activity, {
-        onSuccess: () => navigate(`/activities/${activity.id}`),
+    const text = (key: string) => String(formData.get(key) ?? "").trim();
+    const data: Activity = {
+      id: activity?.id ?? "",
+      title: text("title"),
+      description: text("description"),
+      category: text("category"),
+      date: new Date(text("date")).toISOString(),
+      city: text("city"),
+      venue: text("venue"),
+      isCancelled: activity?.isCancelled ?? false,
+      latitude: activity?.latitude ?? 0,
+      longitude: activity?.longitude ?? 0,
+    };
+    if (activity)
+      updateActivity.mutate(data, { onSuccess: () => navigate(backTo) });
+    else
+      createActivity.mutate(data, {
+        onSuccess: (createdId) => navigate(`/activities/${createdId}`),
       });
-    } else {
-      createActivity.mutate(data as unknown as Activity, {
-        onSuccess: (id) => {
-          navigate(`/activities/${id}`);
-        },
-      });
-    }
   };
 
-  if (isLoadingActivity) {
-    return <Typography>Ładowanie...</Typography>;
-  }
+  if (id && (isLoadingActivity || !activity))
+    return (
+      <ActivityLoadState
+        loading={isLoadingActivity}
+        error={activityError}
+        onRetry={() => void refetchActivity()}
+      />
+    );
 
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        border: "1px solid rgba(7, 92, 45, 0.12)",
-        padding: { xs: 2.5, md: 3.5 },
-      }}
-    >
-      <Typography variant="h5" gutterBottom color="primary">
-        {activity ? "Edytuj aktywność" : "Utwórz aktywność"}
-      </Typography>
-      <Box
-        component="form"
-        sx={{ display: "flex", flexDirection: "column", gap: 3 }}
-        onSubmit={handleSubmit}
+    <Box sx={{ maxWidth: 800, mx: "auto" }}>
+      <Button
+        component={Link}
+        to={backTo}
+        startIcon={<ArrowBack />}
+        disabled={saving}
+        sx={{ px: 0, mb: 2 }}
       >
-        <TextField name="title" label="Tytuł" defaultValue={activity?.title} />
-        <TextField
-          name="description"
-          label="Opis"
-          multiline
-          rows={4}
-          defaultValue={activity?.description}
-        />
-        <TextField
-          name="category"
-          label="Kategoria"
-          defaultValue={activity?.category}
-        />
-        <TextField
-          name="date"
-          label="Data"
-          type="datetime-local"
-          required
-          defaultValue={activity?.date ? toDateTimeLocalValue(activity.date) : ""}
-          slotProps={{ inputLabel: { shrink: true } }}
-        />
-        <TextField name="city" label="Miasto" defaultValue={activity?.city} />
-        <TextField
-          name="venue"
-          label="Miejsce"
-          defaultValue={activity?.venue}
-        />
-        {(updateActivity.isError || createActivity.isError) && (
-          <Alert severity="error">
-            Nie udało się zapisać aktywności. Spróbuj ponownie.
-          </Alert>
-        )}
-        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 3 }}>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            loading={updateActivity.isPending || createActivity.isPending}
+        Wróć {id ? "do wydarzenia" : "do wydarzeń"}
+      </Button>
+      <Typography component="p" variant="overline" color="secondary.main">
+        Dobry pomysł zasługuje na spotkanie
+      </Typography>
+      <Typography component="h1" variant="h2" sx={{ mt: 1 }}>
+        {id ? "Edytuj wydarzenie" : "Zaproś do wspólnego czasu."}
+      </Typography>
+      <Typography color="text.secondary" sx={{ mt: 1, mb: 3 }}>
+        Opowiedz, co planujesz. Podaj termin i miejsce, żeby inni mogli
+        zaplanować swój czas.
+      </Typography>
+      <Paper
+        sx={{
+          border: 1,
+          borderColor: "divider",
+          p: { xs: 2.5, sm: 4 },
+          borderRadius: 4,
+        }}
+      >
+        <Box
+          component="form"
+          key={activity?.id ?? "create"}
+          onSubmit={handleSubmit}
+        >
+          <Box
+            component="fieldset"
+            disabled={saving}
+            sx={{
+              m: 0,
+              p: 0,
+              border: 0,
+              minWidth: 0,
+              display: "flex",
+              flexDirection: "column",
+              gap: 3,
+            }}
           >
-            Zapisz
-          </Button>
-          <Button
-            type="button"
-            color="inherit"
-            disabled={updateActivity.isPending || createActivity.isPending}
-            onClick={() => navigate(id ? `/activities/${id}` : "/activities")}
+            <Typography component="h2" variant="h5">
+              Co się wydarzy?
+            </Typography>
+            <TextField
+              name="title"
+              label="Nazwa wydarzenia"
+              required
+              defaultValue={activity?.title ?? ""}
+              placeholder="Np. Sobotni spacer nad Wartą"
+              slotProps={{ htmlInput: { maxLength: 200, pattern: ".*\\S.*" } }}
+            />
+            <TextField
+              name="description"
+              label="Opis wydarzenia"
+              required
+              multiline
+              minRows={4}
+              defaultValue={activity?.description ?? ""}
+              helperText="Napisz, czego można się spodziewać i co warto zabrać."
+            />
+            <TextField
+              select
+              name="category"
+              label="Kategoria"
+              required
+              defaultValue={activity?.category ?? ""}
+            >
+              {[
+                ...new Set([
+                  ...categories,
+                  ...(activity?.category ? [activity.category] : []),
+                ]),
+              ].map((category) => (
+                <MenuItem key={category} value={category}>
+                  {category}
+                </MenuItem>
+              ))}
+            </TextField>
+            <Divider />
+            <Typography component="h2" variant="h5">
+              Kiedy i gdzie?
+            </Typography>
+            <TextField
+              name="date"
+              label="Data i godzina"
+              type="datetime-local"
+              required
+              defaultValue={
+                activity?.date ? toDateTimeLocalValue(activity.date) : ""
+              }
+              slotProps={{ inputLabel: { shrink: true } }}
+              helperText="Godzina w Twojej lokalnej strefie czasowej."
+            />
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+                gap: 3,
+              }}
+            >
+              <TextField
+                name="city"
+                label="Miasto"
+                required
+                defaultValue={activity?.city ?? ""}
+                slotProps={{ htmlInput: { pattern: ".*\\S.*" } }}
+              />
+              <TextField
+                name="venue"
+                label="Miejsce lub adres"
+                required
+                defaultValue={activity?.venue ?? ""}
+                slotProps={{ htmlInput: { pattern: ".*\\S.*" } }}
+              />
+            </Box>
+          </Box>
+          {(updateActivity.isError || createActivity.isError) && (
+            <Alert severity="error" sx={{ mt: 3 }}>
+              Nie udało się zapisać wydarzenia. Twoje dane pozostały w
+              formularzu. Spróbuj ponownie.
+            </Alert>
+          )}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column-reverse", sm: "row" },
+              justifyContent: "flex-end",
+              gap: 1.5,
+              mt: 4,
+            }}
           >
-            Anuluj
-          </Button>
+            <Button
+              type="button"
+              color="inherit"
+              disabled={saving}
+              onClick={() => navigate(backTo)}
+            >
+              Anuluj
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              loading={saving}
+              startIcon={<Check />}
+            >
+              {id ? "Zapisz zmiany" : "Utwórz wydarzenie"}
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </Paper>
+      </Paper>
+    </Box>
   );
 }

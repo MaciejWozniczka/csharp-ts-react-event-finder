@@ -1,110 +1,127 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Chip,
-  Divider,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Chip, Typography } from "@mui/material";
+import { AccessTime, ArrowForward, PlaceOutlined } from "@mui/icons-material";
+import { Link, useLocation } from "react-router";
 import { formatActivityDate } from "../../../app/utils/formatDate";
-import { Link } from "react-router";
-import { AccessTime, Place } from "@mui/icons-material";
+import ActivityImage from "../../../app/shared/components/ActivityImage";
 
-type Props = {
-  activity: Activity;
-};
-
-export default function ActivityCard({ activity }: Props) {
-  const isHost = false;
-  const isGoing = false;
-  const label = isHost ? "Jesteś organizatorem" : "Bierzesz udział";
-  const isCancelled = activity.isCancelled;
-  const color = isHost ? "secondary" : isGoing ? "warning" : "default";
-
+export default function ActivityCard({ activity }: { activity: Activity }) {
+  const location = useLocation();
   return (
-    <Card
-      elevation={3}
+    <Box
+      component="article"
       sx={{
-        border: "1px solid rgba(7, 92, 45, 0.12)",
-        borderRadius: 3,
+        display: "grid",
+        gridTemplateColumns: {
+          xs: "minmax(0, 1fr)",
+          sm: "190px minmax(0, 1fr)",
+        },
+        border: 1,
+        borderColor: "divider",
+        borderRadius: 4,
+        bgcolor: "background.paper",
         overflow: "hidden",
+        transition: "border-color 180ms ease-out",
+        "&:hover": { borderColor: "primary.main" },
       }}
     >
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          position: "relative",
+          minHeight: { xs: 190, sm: 240 },
+          height: { xs: 190, sm: "100%" },
         }}
       >
-        <CardHeader
-          avatar={<Avatar sx={{ height: 80, width: 80 }} />}
-          title={activity.title}
-          slotProps={{
-            title: {
-              sx: { fontWeight: "bold", fontSize: 20 },
-            },
-          }}
-          subheader={
-            <>
-              Organizowane przez <Link to={`/profile/bob`}>Maciej</Link>
-            </>
-          }
-        />
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mr: 2 }}>
-          {(isHost || isGoing) && (
-            <Chip label={label} color={color} sx={{ borderRadius: 2 }} />
-          )}
-          {isCancelled && (
-            <Chip label="Odwołane" color="error" sx={{ borderRadius: 2 }} />
-          )}
-        </Box>
+        <ActivityImage category={activity.category} />
+        {activity.isCancelled && (
+          <Chip
+            size="small"
+            label="Odwołane"
+            color="error"
+            sx={{ position: "absolute", top: 12, left: 12 }}
+          />
+        )}
       </Box>
-      <Divider sx={{ mb: 3 }} />
-      <CardContent sx={{ p: 3 }}>
-        <Box sx={{ display: "flex", alignItems: "center", mb: 3, px: 3 }}>
-          <AccessTime sx={{ mr: 1 }} />
-          <Typography variant="body2">
-            {formatActivityDate(activity.date)}
-          </Typography>
-          <Place sx={{ ml: 3, mr: 1 }} />
-          <Typography variant="body2">{activity.venue}</Typography>
-        </Box>
-        <Divider />
+      <Box
+        sx={{
+          p: { xs: 2.5, sm: 3 },
+          minWidth: 0,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "start",
+        }}
+      >
+        <Typography
+          variant="overline"
+          color="secondary.main"
+          sx={{ lineHeight: 1.5, mb: 1 }}
+        >
+          {activity.category}
+        </Typography>
+        <Typography
+          variant="h4"
+          component="h2"
+          sx={{ overflowWrap: "anywhere", mb: 1.5 }}
+        >
+          {activity.title}
+        </Typography>
         <Box
           sx={{
             display: "flex",
-            gap: 2,
-            backgroundColor: "grey.200",
-            py: 3,
-            pl: 3,
+            flexWrap: "wrap",
+            gap: 1.5,
+            color: "text.secondary",
+            mb: 1,
           }}
         >
-          Uczestnicy
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.75 }}>
+            <AccessTime sx={{ fontSize: 17 }} />
+            <Typography variant="body2">
+              {formatActivityDate(activity.date)}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 0.75,
+              minWidth: 0,
+            }}
+          >
+            <PlaceOutlined sx={{ fontSize: 17 }} />
+            <Typography variant="body2" sx={{ overflowWrap: "anywhere" }}>
+              {activity.city}
+            </Typography>
+          </Box>
         </Box>
-      </CardContent>
-      <CardContent
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          pb: 2.5,
-          px: { xs: 2.5, md: 3 },
-        }}
-      >
-        <Typography variant="body2">{activity.description}</Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            overflowWrap: "anywhere",
+            mb: 1.5,
+          }}
+        >
+          {activity.description}
+        </Typography>
         <Button
           component={Link}
           to={`/activities/${activity.id}`}
-          size="medium"
-          variant="contained"
-          sx={{ display: "flex", justifySelf: "self-end", borderRadius: 3 }}
+          state={{ from: location.pathname + location.search }}
+          endIcon={<ArrowForward />}
+          sx={{
+            mt: "auto",
+            px: 0,
+            "&:hover": { bgcolor: "transparent", textDecoration: "underline" },
+          }}
+          aria-label={`Zobacz wydarzenie: ${activity.title}`}
         >
-          Pokaż szczegóły
+          Zobacz wydarzenie
         </Button>
-      </CardContent>
-    </Card>
+      </Box>
+    </Box>
   );
 }

@@ -1,113 +1,66 @@
-import { Card, Badge, CardMedia, Box, Typography, Button } from "@mui/material";
-import { Link } from "react-router";
+import { Box, Chip, Typography } from "@mui/material";
+import { AccessTime, PlaceOutlined } from "@mui/icons-material";
 import { formatActivityDate } from "../../../app/utils/formatDate";
-import { useActivities } from "../../../lib/hooks/useActivities";
+import ActivityImage from "../../../app/shared/components/ActivityImage";
 
-type Props = {
+export default function ActivityDetailsHeader({
+  activity,
+}: {
   activity: Activity;
-};
-
-export default function ActivityDetailsHeader({ activity }: Props) {
-  const { updateActivity } = useActivities(activity.id);
-  const isCancelled = activity.isCancelled;
-  const isHost = true;
-  const isGoing = true;
-  const loading = false;
-
+}) {
   return (
-    <Card
-      sx={{
-        position: "relative",
-        mb: 2,
-        backgroundColor: "transparent",
-        overflow: "hidden",
-      }}
-    >
-      {isCancelled && (
-        <Badge
-          sx={{ position: "absolute", left: 40, top: 20, zIndex: 1000 }}
-          color="error"
-          badgeContent="Odwołane"
-        />
-      )}
-      <CardMedia
-        component="img"
-        height="300"
-        image={`/images/categoryImages/${activity.category}.jpg`}
-        alt={`${activity.category} image`}
-      />
+    <Box>
       <Box
         sx={{
-          position: "absolute",
-          bottom: 0,
-          width: "100%",
-          color: "white",
-          padding: 2,
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-          background:
-            "linear-gradient(to top, rgba(0, 0, 0, 1.0), transparent)",
-          boxSizing: "border-box",
+          height: { xs: 230, sm: 330, md: 380 },
+          borderRadius: 4,
+          overflow: "hidden",
+          mb: 3,
         }}
       >
-        <Box>
-          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-            {activity.title}
-          </Typography>
-          <Typography variant="subtitle1">
-            {formatActivityDate(activity.date)}
-          </Typography>
-          <Typography variant="subtitle2">
-            Organizowane przez{" "}
-            <Link
-              to={`/profiles/username`}
-              style={{ color: "white", fontWeight: "bold" }}
-            >
-              Maciej
-            </Link>
-          </Typography>
+        <ActivityImage category={activity.category} eager />
+      </Box>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 1.5 }}>
+        <Chip
+          label={activity.category}
+          sx={{ bgcolor: "primary.light", color: "primary.main" }}
+        />
+        {activity.isCancelled && (
+          <Chip label="Wydarzenie odwołane" color="error" />
+        )}
+      </Box>
+      <Typography
+        variant="h2"
+        component="h1"
+        sx={{
+          fontSize: { xs: "2rem", md: "2.75rem" },
+          overflowWrap: "anywhere",
+        }}
+      >
+        {activity.title}
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: { xs: 1.5, sm: 3 },
+          mt: 2,
+          color: "text.secondary",
+        }}
+      >
+        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+          <AccessTime fontSize="small" />
+          <Typography>{formatActivityDate(activity.date)}</Typography>
         </Box>
-        <Box sx={{ display: "flex", gap: 2 }}>
-          {isHost ? (
-            <>
-              <Button
-                variant="contained"
-                color={isCancelled ? "success" : "error"}
-                onClick={() =>
-                  updateActivity.mutate({
-                    ...activity,
-                    isCancelled: !isCancelled,
-                  })
-                }
-                loading={updateActivity.isPending}
-              >
-                {isCancelled ? "Przywróć wydarzenie" : "Anuluj wydarzenie"}
-              </Button>
-              {!isCancelled && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component={Link}
-                  to={`/activities/${activity.id}/edit`}
-                >
-                  Zarządzaj wydarzeniem
-                </Button>
-              )}
-            </>
-          ) : (
-            <Button
-              variant="contained"
-              color={isGoing ? "primary" : "info"}
-              onClick={() => {}}
-              disabled={isCancelled || loading}
-            >
-              {isGoing ? "Anuluj udział" : "Dołącz do wydarzenia"}
-            </Button>
-          )}
+        <Box
+          sx={{ display: "flex", gap: 1, alignItems: "center", minWidth: 0 }}
+        >
+          <PlaceOutlined fontSize="small" />
+          <Typography sx={{ overflowWrap: "anywhere" }}>
+            {activity.city}
+          </Typography>
         </Box>
       </Box>
-    </Card>
+    </Box>
   );
 }

@@ -1,43 +1,26 @@
-import { CalendarToday, Info, Place } from "@mui/icons-material";
-import { Divider, Grid, Paper, Typography } from "@mui/material";
-import { formatActivityDate } from "../../../app/utils/formatDate";
+import { Box, Typography } from "@mui/material";
 
-type Props = {
+export default function ActivityDetailsInfo({
+  activity,
+}: {
   activity: Activity;
-};
-
-export default function ActivityInfo({ activity }: Props) {
+}) {
   return (
-    <Paper sx={{ mb: 2 }}>
-      <Grid container sx={{ alignItems: "center", pl: 2, py: 1 }}>
-        <Grid size={1}>
-          <Info color="info" fontSize="large" />
-        </Grid>
-        <Grid size={11}>
-          <Typography>{activity.description}</Typography>
-        </Grid>
-      </Grid>
-      <Divider />
-      <Grid container sx={{ alignItems: "center", pl: 2, py: 1 }}>
-        <Grid size={1}>
-          <CalendarToday color="info" fontSize="large" />
-        </Grid>
-        <Grid size={11}>
-          <Typography>{formatActivityDate(activity.date)}</Typography>
-        </Grid>
-      </Grid>
-      <Divider />
-
-      <Grid container sx={{ alignItems: "center", pl: 2, py: 1 }}>
-        <Grid size={1}>
-          <Place color="info" fontSize="large" />
-        </Grid>
-        <Grid size={11}>
-          <Typography>
-            {activity.venue}, {activity.city}
-          </Typography>
-        </Grid>
-      </Grid>
-    </Paper>
+    <Box component="section" aria-labelledby="about-event" sx={{ mb: 4 }}>
+      <Typography variant="h3" component="h2" id="about-event" sx={{ mb: 2 }}>
+        O wydarzeniu
+      </Typography>
+      <Typography
+        sx={{
+          whiteSpace: "pre-wrap",
+          overflowWrap: "anywhere",
+          maxWidth: "70ch",
+          color: "text.secondary",
+        }}
+      >
+        {activity.description ||
+          "Organizator nie dodał jeszcze opisu wydarzenia."}
+      </Typography>
+    </Box>
   );
 }

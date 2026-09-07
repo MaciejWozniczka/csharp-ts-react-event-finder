@@ -5,8 +5,15 @@ import {
   Container,
   Toolbar,
   Typography,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
-import { AccountCircleOutlined, Group } from "@mui/icons-material";
+import {
+  Add,
+  ExploreOutlined,
+  AccountCircleOutlined,
+} from "@mui/icons-material";
+import { Link } from "react-router";
 import MenuItemLink from "../shared/components/MenuItemLink";
 
 export default function NavBar() {
@@ -15,76 +22,83 @@ export default function NavBar() {
       position="static"
       elevation={0}
       sx={{
-        bgcolor: "#064426",
-        color: "#f1f7f2",
-        borderBottom: "1px solid rgba(222, 240, 226, 0.16)",
-        boxShadow: "0 4px 16px rgba(0, 49, 19, 0.10)",
+        bgcolor: "background.paper",
+        color: "text.primary",
+        borderBottom: 1,
+        borderColor: "divider",
       }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="lg">
         <Toolbar
           disableGutters
           sx={{
-            minHeight: { xs: 72, sm: 80 },
+            minHeight: { xs: 76, sm: 88 },
             flexWrap: "wrap",
-            gap: { xs: 1, sm: 2 },
-            py: { xs: 1.5, sm: 1 },
+            gap: 2,
+            py: 1.5,
           }}
         >
-          <MenuItemLink
+          <Box
+            component={Link}
             to="/"
+            aria-label="Event Finder, strona główna"
             sx={{
-              px: 0.5,
-              gap: 1.25,
+              display: "flex",
+              gap: 1,
+              alignItems: "center",
               mr: "auto",
-              "&.active": { backgroundColor: "transparent" },
+              textDecoration: "none",
+              color: "primary.main",
             }}
           >
-            <Group sx={{ fontSize: 30, color: "#f5c66b" }} />
+            <ExploreOutlined sx={{ fontSize: 32 }} />
             <Typography
               component="span"
               sx={{
-                fontSize: { xs: "1.2rem", sm: "1.45rem" },
-                fontWeight: 800,
-                letterSpacing: "-0.035em",
+                fontSize: "1.25rem",
+                fontWeight: 700,
+                letterSpacing: "-0.04em",
               }}
             >
-              Event Finder
+              event finder<span style={{ color: "#a75035" }}>.</span>
             </Typography>
-          </MenuItemLink>
+          </Box>
           <Box
             component="nav"
+            aria-label="Nawigacja główna"
             sx={{
               display: "flex",
+              gap: { xs: 0.5, sm: 2 },
               alignItems: "center",
-              gap: 1,
-              order: { xs: 3, md: 0 },
-              width: { xs: "100%", md: "auto" },
-              borderTop: {
-                xs: "1px solid rgba(222, 240, 226, 0.16)",
-                md: "none",
-              },
-              pt: { xs: 1, md: 0 },
+              width: { xs: "100%", sm: "auto" },
+              justifyContent: "space-between",
             }}
           >
-            <MenuItemLink to="/activities">Aktywności</MenuItemLink>
-            <MenuItemLink to="/activities/create">
-              Utwórz aktywność
-            </MenuItemLink>
+            <MenuItemLink to="/activities">Odkrywaj</MenuItemLink>
+            <Button
+              component={Link}
+              to="/activities/create"
+              variant="contained"
+              startIcon={<Add />}
+              sx={{
+                px: { xs: 1.5, sm: 2.5 },
+                fontSize: { xs: "0.8rem", sm: "0.875rem" },
+              }}
+            >
+              Dodaj wydarzenie
+            </Button>
+            <Tooltip title="Mój profil">
+              <IconButton
+                component={Link}
+                to="/profiles/maciej"
+                aria-label="Mój profil"
+                color="primary"
+                sx={{ minWidth: 44, minHeight: 44 }}
+              >
+                <AccountCircleOutlined />
+              </IconButton>
+            </Tooltip>
           </Box>
-          <Button
-            color="inherit"
-            startIcon={<AccountCircleOutlined />}
-            sx={{
-              minHeight: 44,
-              px: 1.5,
-              ml: { md: 1 },
-              whiteSpace: "nowrap",
-              "&:hover": { bgcolor: "rgba(240, 250, 243, 0.10)" },
-            }}
-          >
-            Użytkownik
-          </Button>
         </Toolbar>
       </Container>
     </AppBar>

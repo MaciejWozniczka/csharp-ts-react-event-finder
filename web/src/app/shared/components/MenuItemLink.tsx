@@ -1,12 +1,13 @@
 import { Box, type SxProps, type Theme } from "@mui/material";
 import { NavLink } from "react-router";
+import type { ReactNode } from "react";
 
 export default function MenuItemLink({
   children,
   to,
   sx = [],
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   to: string;
   sx?: SxProps<Theme>;
 }) {
@@ -14,26 +15,20 @@ export default function MenuItemLink({
     <Box
       component={NavLink}
       to={to}
+      end
       sx={[
         {
           display: "inline-flex",
           alignItems: "center",
-          justifyContent: "center",
-          gap: 1,
           minHeight: 44,
-          px: 2,
+          px: 1.5,
           borderRadius: 2,
-          fontSize: "0.95rem",
-          fontWeight: 600,
+          fontSize: "0.875rem",
+          fontWeight: 700,
           textDecoration: "none",
-          whiteSpace: "nowrap",
-          color: "inherit",
-          transition: "background-color 180ms ease-out",
-          "&:hover": { backgroundColor: "rgba(240, 250, 243, 0.10)" },
-          "&:focus-visible": { outline: "2px solid #f5c66b", outlineOffset: 3 },
-          "&.active": {
-            backgroundColor: "rgba(240, 250, 243, 0.16)",
-          },
+          color: "text.secondary",
+          "&:hover": { bgcolor: "primary.light", color: "primary.main" },
+          "&.active": { color: "primary.main", bgcolor: "primary.light" },
         },
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}

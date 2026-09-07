@@ -3,7 +3,12 @@ import agent from "../api/agent";
 
 export const useActivities = (id?: string | null) => {
   const queryClient = useQueryClient();
-  const { data: activities, isPending } = useQuery({
+  const {
+    data: activities,
+    isPending,
+    isError: isActivitiesError,
+    refetch: refetchActivities,
+  } = useQuery({
     queryKey: ["activities"],
     queryFn: async () => {
       const response = await agent.get<Activity[]>("/activities");
@@ -11,7 +16,12 @@ export const useActivities = (id?: string | null) => {
     },
   });
 
-  const { data: activity, isLoading: isLoadingActivity } = useQuery({
+  const {
+    data: activity,
+    isLoading: isLoadingActivity,
+    error: activityError,
+    refetch: refetchActivity,
+  } = useQuery({
     queryKey: ["activities", id],
     queryFn: async () => {
       const response = await agent.get<Activity>(`/activities/${id}`);
@@ -52,6 +62,10 @@ export const useActivities = (id?: string | null) => {
 
   return {
     activities,
+    isActivitiesError,
+    refetchActivities,
+    activityError,
+    refetchActivity,
     isPending,
     createActivity,
     updateActivity,

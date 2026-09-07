@@ -1,25 +1,27 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import ActivityCard from "./ActivityCard";
-import { useActivities } from "../../../lib/hooks/useActivities";
 
-export default function ActivityList() {
-  const { activities, isPending } = useActivities();
-
-  if (!activities && isPending) {
-    return (
-      <Typography variant="body1" color="text.secondary">
-        Ładowanie wydarzeń...
-      </Typography>
-    );
-  }
-
+export default function ActivityList({
+  activities,
+}: {
+  activities: Activity[];
+}) {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-      {(activities ?? []).map((activity) => (
-        <ActivityCard
-          key={activity.id}
-          activity={activity}
-        />
+    <Box
+      component="ul"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2.5,
+        p: 0,
+        m: 0,
+        listStyle: "none",
+      }}
+    >
+      {activities.map((activity) => (
+        <Box component="li" key={activity.id}>
+          <ActivityCard activity={activity} />
+        </Box>
       ))}
     </Box>
   );

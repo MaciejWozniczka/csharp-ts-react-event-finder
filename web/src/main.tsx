@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import "react-calendar/dist/Calendar.css";
 import "./app/layout/styles.css";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -15,7 +16,7 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
       <RouterProvider router={router} />
     </QueryClientProvider>
   </StrictMode>,
