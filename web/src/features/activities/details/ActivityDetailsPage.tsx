@@ -53,7 +53,7 @@ export default function ActivityDetailsPage() {
           <ActivityDetailsInfo activity={activity} />
           <ActivityDetailsChat key={activity.id} activityId={activity.id} />
         </Box>
-        <ActivityDetailsSidebar activity={activity} />
+        <ActivityDetailsSidebar />
       </Box>
     </>
   );

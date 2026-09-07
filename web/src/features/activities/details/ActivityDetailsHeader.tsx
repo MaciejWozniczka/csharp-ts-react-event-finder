@@ -2,6 +2,7 @@ import { Box, Chip, Typography } from "@mui/material";
 import { AccessTime, PlaceOutlined } from "@mui/icons-material";
 import { formatActivityDate } from "../../../app/utils/formatDate";
 import ActivityImage from "../../../app/shared/components/ActivityImage";
+import ActivityDetailsActions from "./ActivityDetailsActions";
 
 export default function ActivityDetailsHeader({
   activity,
@@ -9,7 +10,7 @@ export default function ActivityDetailsHeader({
   activity: Activity;
 }) {
   return (
-    <Box>
+    <Box component="header">
       <Box
         sx={{
           height: { xs: 230, sm: 330, md: 380 },
@@ -61,6 +62,7 @@ export default function ActivityDetailsHeader({
           </Typography>
         </Box>
       </Box>
+      <ActivityDetailsActions activity={activity} />
     </Box>
   );
 }

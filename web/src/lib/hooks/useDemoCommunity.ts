@@ -1,18 +1,10 @@
 import { useSyncExternalStore } from "react";
 
-export type DemoProfile = {
-  name: string;
-  city: string;
-  bio: string;
-  interests: string[];
-};
-type DemoComment = {
-  id: string;
-  activityId: string;
-  body: string;
-  createdAt: string;
-};
-type DemoCommunity = { profile: DemoProfile; comments: DemoComment[] };
+import type {
+  DemoComment,
+  DemoCommunity,
+  DemoProfile,
+} from "../types/demoCommunity";
 
 const storageKey = "event-finder:demo-community:v1";
 const initial: DemoCommunity = {

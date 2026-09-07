@@ -14,25 +14,28 @@ import {
 import { useState } from "react";
 import { categories as knownCategories } from "../../../app/utils/categories";
 import ActivityDateRange from "./ActivityDateRange";
+import { useActivities } from "../../../lib/hooks/useActivities";
+import { useActivityFilters } from "../../../lib/hooks/useActivityFilters";
 
-type Props = {
-  params: URLSearchParams;
-  cities: string[];
-  categories: string[];
-  onChange: (key: string, value: string) => void;
-  onDateRangeChange: (from: string, to: string) => void;
-  onClear: () => void;
-  hasFilters: boolean;
-};
-export default function ActivityFilters({
-  params,
-  cities,
-  categories,
-  onChange,
-  onDateRangeChange,
-  onClear,
-  hasFilters,
-}: Props) {
+export default function ActivityFilters() {
+  const { activities } = useActivities();
+  const {
+    params,
+    changeFilter: onChange,
+    changeDateRange: onDateRangeChange,
+    clearFilters: onClear,
+    hasFilters,
+  } = useActivityFilters();
+  const cities = [
+    ...new Set(
+      (activities ?? []).map((activity) => activity.city).filter(Boolean),
+    ),
+  ].sort((a, b) => a.localeCompare(b, "pl"));
+  const categories = [
+    ...new Set(
+      (activities ?? []).map((activity) => activity.category).filter(Boolean),
+    ),
+  ];
   const wide = useMediaQuery(useTheme().breakpoints.up("md"));
   const [mobileOpen, setMobileOpen] = useState(false);
   const selectedCity = params.get("city") ?? "";

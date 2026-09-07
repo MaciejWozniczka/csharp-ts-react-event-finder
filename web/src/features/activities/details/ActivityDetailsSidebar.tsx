@@ -1,30 +1,13 @@
-import { useState } from "react";
-import { Alert, Box, Button, Divider, Typography } from "@mui/material";
-import {
-  CalendarTodayOutlined,
-  EditOutlined,
-  PlaceOutlined,
-} from "@mui/icons-material";
+﻿import { Avatar, Box, Button, Chip, Typography } from "@mui/material";
 import { Link } from "react-router";
-import { useActivities } from "../../../lib/hooks/useActivities";
-import { formatActivityDate } from "../../../app/utils/formatDate";
-import ConfirmDialog from "../../../app/shared/components/ConfirmDialog";
+import { useDemoCommunity } from "../../../lib/hooks/useDemoCommunity";
 
-export default function ActivityDetailsSidebar({
-  activity,
-}: {
-  activity: Activity;
-}) {
-  const { updateActivity } = useActivities(activity.id);
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const changeStatus = () => {
-    setConfirmOpen(false);
-    updateActivity.mutate({ ...activity, isCancelled: !activity.isCancelled });
-  };
+export default function ActivityDetailsSidebar() {
+  const { profile } = useDemoCommunity();
   return (
     <Box
       component="aside"
-      aria-label="Termin, miejsce i zarządzanie"
+      aria-label="Społeczność wydarzenia"
       sx={{
         p: 3,
         border: 1,
@@ -35,77 +18,57 @@ export default function ActivityDetailsSidebar({
         top: 24,
       }}
     >
-      <Typography variant="h5" component="h2" sx={{ mb: 3 }}>
-        Zaplanuj spotkanie
+      <Typography component="h2" variant="h5" sx={{ mb: 2.5 }}>
+        Społeczność
       </Typography>
-      <Box sx={{ display: "flex", gap: 1.5, mb: 2.5 }}>
-        <CalendarTodayOutlined color="primary" fontSize="small" />
-        <Box>
-          <Typography variant="body2" color="text.secondary">
-            Kiedy
-          </Typography>
-          <Typography sx={{ fontWeight: 500 }}>
-            {formatActivityDate(activity.date)}
-          </Typography>
-        </Box>
-      </Box>
-      <Box sx={{ display: "flex", gap: 1.5, mb: 3 }}>
-        <PlaceOutlined color="primary" fontSize="small" />
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}>
+        <Avatar
+          component={Link}
+          to="/profiles/maciej"
+          aria-label={`Profil: ${profile.name}`}
+          src="/images/user.png"
+          sx={{ width: 48, height: 48 }}
+        />
         <Box sx={{ minWidth: 0 }}>
-          <Typography variant="body2" color="text.secondary">
-            Gdzie
+          <Typography
+            component={Link}
+            to="/profiles/maciej"
+            sx={{
+              color: "text.primary",
+              textDecoration: "none",
+              fontWeight: 700,
+              overflowWrap: "anywhere",
+            }}
+          >
+            {profile.name}
           </Typography>
-          <Typography sx={{ fontWeight: 500, overflowWrap: "anywhere" }}>
-            {activity.venue}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {activity.city}
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ overflowWrap: "anywhere" }}
+          >
+            {profile.city}
           </Typography>
         </Box>
       </Box>
-      {activity.isCancelled && (
-        <Alert severity="warning" sx={{ mb: 2 }}>
-          To wydarzenie zostało odwołane.
-        </Alert>
-      )}
-      <Divider sx={{ mb: 2.5 }} />
-      <Typography component="h2" variant="h6" sx={{ mb: 1.5 }}>
-        Zarządzanie wydarzeniem
+      <Chip
+        size="small"
+        variant="outlined"
+        label="Profil demonstracyjny"
+        sx={{ mb: 1.5 }}
+      />
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        Podgląd części społecznościowej. Zapisy na wydarzenia nie są jeszcze
+        dostępne.
       </Typography>
       <Button
-        fullWidth
-        variant="outlined"
         component={Link}
-        to={`/activities/${activity.id}/edit`}
-        disabled={updateActivity.isPending}
-        startIcon={<EditOutlined />}
-      >
-        Edytuj wydarzenie
-      </Button>
-      <Button
+        to="/profiles/maciej"
+        variant="outlined"
         fullWidth
-        color={activity.isCancelled ? "primary" : "error"}
-        sx={{ mt: 1 }}
-        loading={updateActivity.isPending}
-        onClick={() =>
-          activity.isCancelled ? changeStatus() : setConfirmOpen(true)
-        }
       >
-        {activity.isCancelled ? "Przywróć wydarzenie" : "Odwołaj wydarzenie"}
+        Zobacz profil
       </Button>
-      {updateActivity.isError && (
-        <Alert severity="error" sx={{ mt: 2 }}>
-          Nie udało się zmienić statusu. Spróbuj ponownie.
-        </Alert>
-      )}
-      <ConfirmDialog
-        open={confirmOpen}
-        title="Odwołać wydarzenie?"
-        message={`Wydarzenie „${activity.title}” zostanie oznaczone jako odwołane. Możesz je później przywrócić.`}
-        confirmText="Odwołaj wydarzenie"
-        onClose={() => setConfirmOpen(false)}
-        onConfirm={changeStatus}
-      />
     </Box>
   );
 }
