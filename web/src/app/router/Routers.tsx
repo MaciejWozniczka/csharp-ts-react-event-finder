@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import App from "../layout/App";
 import HomePage from "../../features/activities/home/HomePage";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDasboard.tsx";
@@ -23,6 +23,7 @@ export const router = createBrowserRouter([
       { path: "profile", element: <ProfilePage /> },
       { path: "not-found", element: <NotFound /> },
       { path: "server-error", element: <ServerError /> },
+      { path: "*", element: <Navigate replace to="/not-found" /> },
     ],
   },
 ]);
