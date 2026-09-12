@@ -5,6 +5,7 @@ import ActivityDashboard from "../../features/activities/dashboard/ActivityDasbo
 import ActivityForm from "../../features/activities/forms/ActivityForm";
 import ActivityDetailsPage from "../../features/activities/details/ActivityDetailsPage.tsx";
 import ProfilePage from "../../features/profiles/ProfilePage";
+import NotFound from "../../features/errors/NotFound.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
       { path: "profiles/:username", element: <ProfilePage /> },
       { path: "profile/:username", element: <ProfilePage /> },
       { path: "profile", element: <ProfilePage /> },
+      { path: "not-found", element: <NotFound /> },
     ],
   },
 ]);
