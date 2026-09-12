@@ -1,15 +1,17 @@
-﻿namespace EventFinder.Application.Activities.Commands;
+﻿using EventFinder.Application.Core;
+
+namespace EventFinder.Application.Activities.Commands;
 
 public class EditActivity
 {
-    public class Command : IRequest
+    public class Command : IRequest<Result<Unit>>
     {
         public required Activity Activity { get; set; }
     }
 
-    public class Handler(DataContext context, IMapper mapper) : IRequestHandler<Command>
+    public class Handler(DataContext context, IMapper mapper) : IRequestHandler<Command, Result<Unit>>
     {
-        public async Task Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             var activity = await context
                 .Activities
@@ -17,12 +19,19 @@ public class EditActivity
             
             if (activity == null)
             {
-                throw new Exception("Activity not found");
+                return Result<Unit>.Failure("Nie znaleziono aktywności", 404);
             }
 
             mapper.Map(request.Activity, activity);
 
-            await context.SaveChangesAsync(cancellationToken);
+            var result = await context.SaveChangesAsync(cancellationToken) > 0;
+
+            if (!result)
+            {
+                return Result<Unit>.Failure("Nie udało się zaktualizować aktywności", 400);
+            }
+
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }
