@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import { router } from "../../app/router/Routers";
 
 const agent = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -10,19 +11,29 @@ agent.interceptors.response.use(
     return response;
   },
   async (error) => {
-    const { status } = error.response;
+    const { status, data } = error.response;
     switch (status) {
       case 400:
-        toast.error("Niepoprawne zapytanie");
+        if (data.errors) {
+          const modalStateErrors = [];
+          for (const key in data.errors) {
+            if (data.errors[key]) {
+              modalStateErrors.push(data.errors[key]);
+            }
+          }
+          throw modalStateErrors.flat();
+        } else {
+          toast.error(data);
+        }
         break;
       case 401:
         toast.error("Brak autoryzacji");
         break;
       case 404:
-        toast.error("Nie znaleziono elementu");
+        router.navigate("/not-found");
         break;
       case 500:
-        toast.error("Błąd serwera");
+        router.navigate("/server-error", { state: { error: data } });
         break;
     }
 

@@ -56,7 +56,10 @@ export const useActivities = (id?: string | null) => {
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["activities"] });
+      queryClient.invalidateQueries({
+        queryKey: ["activities"],
+        exact: true,
+      });
     },
   });
 
