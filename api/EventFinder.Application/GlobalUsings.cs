@@ -1,6 +1,7 @@
 // Global using directives
 
 global using AutoMapper;
+global using EventFinder.Application.Activities.Commands;
 global using EventFinder.Application.Activities.DTOs;
 global using EventFinder.Domain.Activities;
 global using EventFinder.Infrastructure.Data;
