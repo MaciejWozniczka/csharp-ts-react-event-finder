@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EventFinder.Api\EventFinder.Api.csproj" />
-    <ProjectReference Include="..\EventFinder.Domain\EventFinder.Domain.csproj" />
+    <ProjectReference Include="..\EventFinder.Domain\EventFinder.Domain.csproj" IsAspireProjectResource="false" />
   </ItemGroup>
 
 </Project>
