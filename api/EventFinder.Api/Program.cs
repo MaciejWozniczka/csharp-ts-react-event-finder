@@ -30,6 +30,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.LicenseKey = builder.Configuration.GetSection("MediatR:LicenseKey").Get<string>();
 });
 builder.Services.AddAutoMapper(_ => { }, typeof(MappingProfiles).Assembly);
+builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
 
 var app = builder.Build();
 
