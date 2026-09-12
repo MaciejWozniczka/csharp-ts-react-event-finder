@@ -1,6 +1,4 @@
-﻿using EventFinder.Application.Activities.Commands;
-
-namespace EventFinder.Api.Controllers;
+﻿namespace EventFinder.Api.Controllers;
 
 
 public class ActivitiesController : BaseApiController
@@ -25,9 +23,9 @@ public class ActivitiesController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateActivityAsync(Activity activity)
+    public async Task<ActionResult<Guid>> CreateActivityAsync(CreateActivityDto activityDto)
     {
-        return await Mediator.Send(new CreateActivity.Command { Activity = activity }, CancellationToken);
+        return await Mediator.Send(new CreateActivity.Command { ActivityDto = activityDto }, CancellationToken);
     }
 
     [HttpPut]

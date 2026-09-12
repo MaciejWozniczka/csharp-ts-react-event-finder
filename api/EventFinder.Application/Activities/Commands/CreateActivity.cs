@@ -4,19 +4,23 @@ public class CreateActivity
 {
     public class Command : IRequest<Guid>
     {
-        public required Activity Activity { get; set; }
+        public required CreateActivityDto ActivityDto { get; set; }
     }
-    public class Handler(DataContext context) : IRequestHandler<Command, Guid>
+    public class Handler(DataContext context, IMapper mapper, IValidator<Command> validator) : IRequestHandler<Command, Guid>
     {
         public async Task<Guid> Handle(Command request, CancellationToken cancellationToken)
         {
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+            var activity = mapper.Map<Activity>(request.ActivityDto);
+
             context.Activities
-                .Add(request.Activity);
+                .Add(activity);
 
             await context
                 .SaveChangesAsync(cancellationToken);
 
-            return request.Activity.Id;
+            return activity.Id;
         }
     }
 }
