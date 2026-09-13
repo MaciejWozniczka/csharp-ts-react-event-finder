@@ -1,6 +1,7 @@
 import { Alert, Box, Typography } from "@mui/material";
 import { CalendarTodayOutlined, PlaceOutlined } from "@mui/icons-material";
 import { formatDate } from "../../../app/utils/formatDate";
+import MapComponent from "../../../app/shared/components/MapComponent";
 
 export default function ActivityDetailsInfo({
   activity,
@@ -26,7 +27,7 @@ export default function ActivityDetailsInfo({
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 2fr" },
           gap: 3,
           mt: 3,
           pt: 3,
@@ -56,6 +57,23 @@ export default function ActivityDetailsInfo({
             </Typography>
           </Box>
         </Box>
+      </Box>
+      <Box
+        role="region"
+        aria-label={`Lokalizacja wydarzenia: ${activity.venue}`}
+        sx={{
+          height: 220,
+          mt: 3,
+          overflow: "hidden",
+          border: 1,
+          borderColor: "divider",
+          borderRadius: 2,
+        }}
+      >
+        <MapComponent
+          position={[activity.latitude, activity.longitude]}
+          venue={activity.venue}
+        />
       </Box>
       {activity.isCancelled && (
         <Alert severity="warning" sx={{ mt: 2 }}>

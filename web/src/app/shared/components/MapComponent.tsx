@@ -19,7 +19,6 @@ type Props = {
 };
 
 export default function MapComponent({ position, venue }: Props) {
-  console.log(position);
   return (
     <MapContainer
       center={position}
