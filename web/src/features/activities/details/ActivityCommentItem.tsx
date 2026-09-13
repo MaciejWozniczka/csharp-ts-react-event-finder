@@ -1,7 +1,7 @@
 import { Avatar, Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { DeleteOutlined } from "@mui/icons-material";
 import { Link } from "react-router";
-import { formatActivityDate } from "../../../app/utils/formatDate";
+import { formatDate } from "../../../app/utils/formatDate";
 import type { DemoComment } from "../../../lib/types/demoCommunity";
 
 export default function ActivityCommentItem({
@@ -46,12 +46,12 @@ export default function ActivityCommentItem({
         </Typography>
         <Typography
           component="time"
-          dateTime={comment.createdAt}
+          dateTime={comment.createdAt.toISOString()}
           variant="body2"
           color="text.secondary"
           sx={{ display: "block", mb: 1 }}
         >
-          {formatActivityDate(comment.createdAt)}
+          {formatDate(comment.createdAt)}
         </Typography>
         <Typography sx={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}>
           {comment.body}

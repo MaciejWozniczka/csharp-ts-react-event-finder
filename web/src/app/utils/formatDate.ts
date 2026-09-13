@@ -1,11 +1,5 @@
-export function formatActivityDate(value: string): string {
-  const date = new Date(value);
+import { format } from "date-fns";
 
-  if (Number.isNaN(date.getTime())) {
-    return value;
-  }
-
-  const pad = (number: number) => number.toString().padStart(2, "0");
-
-  return `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+export function formatDate(value: Date): string {
+  return format(value, "dd.MM.yyyy HH:mm");
 }

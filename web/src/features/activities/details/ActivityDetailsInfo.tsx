@@ -1,6 +1,6 @@
 import { Alert, Box, Typography } from "@mui/material";
 import { CalendarTodayOutlined, PlaceOutlined } from "@mui/icons-material";
-import { formatActivityDate } from "../../../app/utils/formatDate";
+import { formatDate } from "../../../app/utils/formatDate";
 
 export default function ActivityDetailsInfo({
   activity,
@@ -41,7 +41,7 @@ export default function ActivityDetailsInfo({
               Kiedy
             </Typography>
             <Typography sx={{ fontWeight: 500 }}>
-              {formatActivityDate(activity.date)}
+              {formatDate(activity.date)}
             </Typography>
           </Box>
         </Box>

@@ -1,6 +1,6 @@
 import { Box, Chip, Typography } from "@mui/material";
 import { AccessTime, PlaceOutlined } from "@mui/icons-material";
-import { formatActivityDate } from "../../../app/utils/formatDate";
+import { formatDate } from "../../../app/utils/formatDate";
 import ActivityImage from "../../../app/shared/components/ActivityImage";
 import ActivityDetailsActions from "./ActivityDetailsActions";
 
@@ -56,7 +56,7 @@ export default function ActivityDetailsHeader({
       >
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <AccessTime fontSize="small" />
-          <Typography>{formatActivityDate(activity.date)}</Typography>
+          <Typography>{formatDate(activity.date)}</Typography>
         </Box>
         <Box
           sx={{ display: "flex", gap: 1, alignItems: "center", minWidth: 0 }}

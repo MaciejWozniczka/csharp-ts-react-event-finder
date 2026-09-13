@@ -1,7 +1,7 @@
 import { Box, Button, Chip, Typography } from "@mui/material";
 import { AccessTime, ArrowForward, PlaceOutlined } from "@mui/icons-material";
 import { Link, useLocation } from "react-router";
-import { formatActivityDate } from "../../../app/utils/formatDate";
+import { formatDate } from "../../../app/utils/formatDate";
 import ActivityImage from "../../../app/shared/components/ActivityImage";
 
 function getCategoryValue(category: Activity['category']): string {
@@ -81,7 +81,7 @@ export default function ActivityCard({ activity }: { activity: Activity }) {
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.75 }}>
             <AccessTime sx={{ fontSize: 17 }} />
             <Typography variant="body2">
-              {formatActivityDate(activity.date)}
+              {formatDate(activity.date)}
             </Typography>
           </Box>
           <Box
