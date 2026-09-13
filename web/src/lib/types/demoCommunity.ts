@@ -8,6 +8,6 @@ export type DemoComment = {
   id: string;
   activityId: string;
   body: string;
-  createdAt: string;
+  createdAt: Date;
 };
 export type DemoCommunity = { profile: DemoProfile; comments: DemoComment[] };

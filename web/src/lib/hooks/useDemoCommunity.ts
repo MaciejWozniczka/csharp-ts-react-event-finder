@@ -7,6 +7,7 @@ import type {
 } from "../types/demoCommunity";
 
 const storageKey = "event-finder:demo-community:v1";
+type StoredDemoComment = Omit<DemoComment, "createdAt"> & { createdAt: string };
 const initial: DemoCommunity = {
   profile: {
     name: "Maciej",
@@ -34,15 +35,21 @@ function read(): DemoCommunity {
     return {
       profile,
       comments: Array.isArray(data.comments)
-        ? data.comments.filter(
-            (comment: Partial<DemoComment> | null) =>
-              comment &&
-              typeof comment.id === "string" &&
-              typeof comment.activityId === "string" &&
-              typeof comment.body === "string" &&
-              typeof comment.createdAt === "string" &&
-              !Number.isNaN(new Date(comment.createdAt).getTime()),
-          )
+        ? data.comments.flatMap((comment: Partial<StoredDemoComment> | null) => {
+            if (
+              !comment ||
+              typeof comment.id !== "string" ||
+              typeof comment.activityId !== "string" ||
+              typeof comment.body !== "string" ||
+              typeof comment.createdAt !== "string"
+            )
+              return [];
+
+            const createdAt = new Date(comment.createdAt);
+            return Number.isNaN(createdAt.getTime())
+              ? []
+              : [{ ...comment, createdAt } as DemoComment];
+          })
         : [],
     };
   } catch {
@@ -93,7 +100,7 @@ export function useDemoCommunity() {
             id: crypto.randomUUID(),
             activityId,
             body: text,
-            createdAt: new Date().toISOString(),
+            createdAt: new Date(),
           },
         ],
       });
