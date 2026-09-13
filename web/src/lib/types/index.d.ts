@@ -35,6 +35,9 @@ type LocationIQAddress = {
   town?: string;
   village?: string;
   city?: string;
+  city_district?: string;
+  municipality?: string;
+  state_district?: string;
   county: string;
   state: string;
   postcode: string;

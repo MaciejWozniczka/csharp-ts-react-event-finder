@@ -18,6 +18,26 @@ type Props<T extends FieldValues> = {
   label: string;
 } & UseControllerProps<T>;
 
+function getLocationErrorMessage(error: unknown) {
+  if (!error || typeof error !== "object") return undefined;
+
+  const locationError = error as {
+    message?: string;
+    city?: { message?: string };
+    venue?: { message?: string };
+    latitude?: { message?: string };
+    longitude?: { message?: string };
+  };
+
+  return (
+    locationError.message ||
+    locationError.city?.message ||
+    locationError.venue?.message ||
+    locationError.latitude?.message ||
+    locationError.longitude?.message
+  );
+}
+
 export default function LocationInput<T extends FieldValues>(props: Props<T>) {
   const { fieldState, field } = useController({ ...props });
   const [loading, setLoading] = useState(false);
@@ -68,8 +88,13 @@ export default function LocationInput<T extends FieldValues>(props: Props<T>) {
   const handleSelect = (location: LocationIQSuggestion) => {
     const city =
       location.address?.city ||
+      location.address?.town ||
       location.address?.village ||
-      location.address?.town;
+      location.address?.municipality ||
+      location.address?.city_district ||
+      location.address?.state_district ||
+      location.address?.county ||
+      location.display_place;
     const venue = location.display_name;
     const latitude = location.lat;
     const longitude = location.lon;
@@ -88,7 +113,7 @@ export default function LocationInput<T extends FieldValues>(props: Props<T>) {
         fullWidth
         variant="outlined"
         error={!!fieldState.error}
-        helperText={fieldState.error?.message}
+        helperText={getLocationErrorMessage(fieldState.error)}
       />
       {loading && <Typography>Wyszukiwanie lokalizacji…</Typography>}
       {suggestions.length > 0 && (
