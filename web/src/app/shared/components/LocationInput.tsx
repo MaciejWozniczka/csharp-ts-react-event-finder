@@ -11,7 +11,7 @@ import {
   useController,
   type UseControllerProps,
 } from "react-hook-form";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 
 type Props<T extends FieldValues> = {
@@ -46,7 +46,7 @@ export default function LocationInput<T extends FieldValues>(props: Props<T>) {
 
         try {
           const res = await axios.get<LocationIQSuggestion[]>(
-            `${locationUrl}q=${query}`,
+            `${locationUrl}q=${encodeURIComponent(query)}`,
           );
           setSuggestions(res.data);
         } catch (e) {
@@ -58,9 +58,11 @@ export default function LocationInput<T extends FieldValues>(props: Props<T>) {
     [locationUrl],
   );
 
-  const handleChange = async (value: string) => {
+  useEffect(() => fetchSuggestions.clear, [fetchSuggestions]);
+
+  const handleChange = (value: string) => {
     field.onChange(value);
-    await fetchSuggestions(value);
+    fetchSuggestions(value);
   };
 
   const handleSelect = (location: LocationIQSuggestion) => {
@@ -72,7 +74,6 @@ export default function LocationInput<T extends FieldValues>(props: Props<T>) {
     const latitude = location.lat;
     const longitude = location.lon;
 
-    inputValue(venue);
     field.onChange({ city, venue, latitude, longitude });
     setSuggestions([]);
   };
@@ -83,12 +84,13 @@ export default function LocationInput<T extends FieldValues>(props: Props<T>) {
         {...props}
         value={inputValue}
         onChange={(e) => handleChange(e.target.value)}
+        onBlur={field.onBlur}
         fullWidth
         variant="outlined"
         error={!!fieldState.error}
         helperText={fieldState.error?.message}
       />
-      {loading && <Typography>Loading...</Typography>}
+      {loading && <Typography>Wyszukiwanie lokalizacji…</Typography>}
       {suggestions.length > 0 && (
         <List sx={{ border: 1 }}>
           {suggestions.map((suggestion) => (
