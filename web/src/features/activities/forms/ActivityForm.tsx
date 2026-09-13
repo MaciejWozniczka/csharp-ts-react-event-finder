@@ -1,25 +1,15 @@
-import {
-  Paper,
-  Typography,
-  Box,
-  TextField,
-  Button,
-  Alert,
-  Divider,
-  MenuItem,
-} from "@mui/material";
-import { ArrowBack, Check } from "@mui/icons-material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import { useActivities } from "../../../lib/hooks/useActivities";
-import { Link, useNavigate, useParams } from "react-router";
-import { categories } from "../../../app/utils/categories";
-import ActivityLoadState from "../../../app/shared/components/ActivityLoadState";
+import { useNavigate, useParams } from "react-router";
+import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import {
   activitySchema,
   type ActivitySchema,
 } from "../../../lib/schemas/activitySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import TextInput from "../../../app/shared/components/TextInput";
+import SelectInput from "../../../app/shared/components/SelectInput";
 import DateTimeInput from "../../../app/shared/components/DateTimeInput";
 import LocationInput from "../../../app/shared/components/LocationInput";
 import { categoryOptions } from "../../../app/utils/categories";
@@ -29,28 +19,14 @@ function getCategoryValue(category: Activity['category']): string {
 }
 
 export default function ActivityForm() {
-  const {
-    control,
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ActivitySchema>({
+  const { control, reset, handleSubmit } = useForm<ActivitySchema>({
     mode: "onTouched",
     resolver: zodResolver(activitySchema),
   });
   const { id } = useParams();
-  const {
-    updateActivity,
-    createActivity,
-    activity,
-    isLoadingActivity,
-    activityError,
-    refetchActivity,
-  } = useActivities(id);
-  const saving = updateActivity.isPending || createActivity.isPending;
-  const backTo = id ? `/activities/${id}` : "/activities";
   const navigate = useNavigate();
+  const { updateActivity, createActivity, activity, isLoadingActivity } =
+    useActivities(id);
 
   useEffect(() => {
     if (activity) {
@@ -67,39 +43,32 @@ export default function ActivityForm() {
     }
   }, [activity, reset]);
 
-  const onSubmit = (data: ActivitySchema) => {
-    console.log(data);
+  const onSubmit = async (data: ActivitySchema) => {
+    const { location, ...rest } = data;
+    const flattenedData = { ...rest, ...location };
+    try {
+      if (activity) {
+        updateActivity.mutate({ ...activity, ...flattenedData } as Activity, {
+          onSuccess: () => navigate(`/activities/${activity.id}`),
+        });
+      } else {
+        createActivity.mutate(flattenedData as Activity, {
+          onSuccess: (id) => {
+            navigate(`/activities/${id}`);
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  if (id && (isLoadingActivity || !activity))
-    return (
-      <ActivityLoadState
-        loading={isLoadingActivity}
-        error={activityError}
-        onRetry={() => void refetchActivity()}
-      />
-    );
+  if (isLoadingActivity) return <Typography>Loading activity...</Typography>;
 
   return (
-    <Box sx={{ maxWidth: 800, mx: "auto" }}>
-      <Button
-        component={Link}
-        to={backTo}
-        startIcon={<ArrowBack />}
-        disabled={saving}
-        sx={{ px: 0, mb: 2 }}
-      >
-        Wróć {id ? "do wydarzenia" : "do wydarzeń"}
-      </Button>
-      <Typography component="p" variant="overline" color="secondary.main">
-        Dobry pomysł zasługuje na spotkanie
-      </Typography>
-      <Typography component="h1" variant="h2" sx={{ mt: 1 }}>
-        {id ? "Edytuj wydarzenie" : "Zaproś do wspólnego czasu."}
-      </Typography>
-      <Typography color="text.secondary" sx={{ mt: 1, mb: 3 }}>
-        Opowiedz, co planujesz. Podaj termin i miejsce, żeby inni mogli
-        zaplanować swój czas.
+    <Paper sx={{ borderRadius: 3, padding: 3 }}>
+      <Typography variant="h5" gutterBottom color="primary">
+        {activity ? "Edit Activity" : "Create Activity"}
       </Typography>
       <Box
         component="form"
