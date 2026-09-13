@@ -17,9 +17,9 @@ public class DbInitializer
                     Description = "Luźny spacer po Ostrowie Tumskim zakończony kawą. Dobre wydarzenie, żeby poznać nowych ludzi.",
                     Category = "Towarzyskie",
                     City = "Poznań",
-                    Venue = "Brama Poznania",
-                    Latitude = 52.4084,
-                    Longitude = 16.9587
+                    Venue = "Brama Poznania, Wartostrada, Śródka, Zagórze, Poznań, województwo wielkopolskie, 61-122, Polska",
+                    Latitude = 52.41169780,
+                    Longitude = 16.95168140
                 },
                 new Activity
                 {
@@ -28,9 +28,9 @@ public class DbInitializer
                     Description = "Wspólne granie w proste gry planszowe, bez potrzeby wcześniejszego doświadczenia.",
                     Category = "Towarzyskie",
                     City = "Poznań",
-                    Venue = "Klubokawiarnia Meskalina",
-                    Latitude = 52.4064,
-                    Longitude = 16.9252
+                    Venue = "5, Jana Henryka Dąbrowskiego, Jeżyckie Osiedle, Jeżyce, Poznań, województwo wielkopolskie, 60-829, Polska",
+                    Latitude = 52.41095230,
+                    Longitude = 16.91252190
                 },
                 new Activity
                 {
@@ -38,10 +38,10 @@ public class DbInitializer
                     Date = DateTime.Now.AddDays(5).Date.AddHours(8),
                     Description = "Spokojne 5 km w grupie, z rozgrzewką i śniadaniem po biegu.",
                     Category = "Sport",
-                    City = "Poznań",
-                    Venue = "Park Cytadela",
-                    Latitude = 52.4236,
-                    Longitude = 16.9366
+                    City = "Park Cytadela",
+                    Venue = "Park Cytadela, 61-663, Polska",
+                    Latitude = 52.42155015,
+                    Longitude = 16.93450220
                 },
                 new Activity
                 {
@@ -50,9 +50,9 @@ public class DbInitializer
                     Description = "Przygotujemy makaron od podstaw i zjemy kolację przy wspólnym stole.",
                     Category = "Kulinarne",
                     City = "Poznań",
-                    Venue = "Concordia Design",
-                    Latitude = 52.4088,
-                    Longitude = 16.9177
+                    Venue = "Concordia Design, 3, Zwierzyniecka, Rynek Jeżycki, Jeżyce, Poznań, województwo wielkopolskie, 60-813, Polska",
+                    Latitude = 52.40726245,
+                    Longitude = 16.91105771
                 },
                 new Activity
                 {
@@ -62,9 +62,9 @@ public class DbInitializer
                     Category = "Kultura",
                     IsCancelled = true,
                     City = "Poznań",
-                    Venue = "Rynek Jeżycki",
-                    Latitude = 52.4077,
-                    Longitude = 16.8993
+                    Venue = "Rynek Jeżycki, Jeżyce, Poznań, województwo wielkopolskie, 60-847, Polska",
+                    Latitude = 52.41231680,
+                    Longitude = 16.90449580
                 },
                 new Activity
                 {
@@ -72,10 +72,10 @@ public class DbInitializer
                     Date = DateTime.Now.AddDays(1).Date.AddHours(16),
                     Description = "Rekreacyjna gra dla osób na każdym poziomie. Drużyny ustalimy na miejscu.",
                     Category = "Sport",
-                    City = "Warszawa",
-                    Venue = "Pole Mokotowskie",
-                    Latitude = 52.2114,
-                    Longitude = 21.0065
+                    City = "Pole Mokotowskie",
+                    Venue = "Pole Mokotowskie, Polska",
+                    Latitude = 52.21198575,
+                    Longitude = 21.00056014
                 },
                 new Activity
                 {
@@ -84,9 +84,9 @@ public class DbInitializer
                     Description = "Spokojne spotkanie przy brunchu dla osób, które chcą poszerzyć grono znajomych.",
                     Category = "Kulinarne",
                     City = "Warszawa",
-                    Venue = "Hala Koszyki",
-                    Latitude = 52.2218,
-                    Longitude = 21.0125
+                    Venue = "Hala Koszyki, Śródmieście, Warszawa, województwo mazowieckie, 00-667, Polska",
+                    Latitude = 52.22210850,
+                    Longitude = 21.01110331
                 },
                 new Activity
                 {
@@ -95,9 +95,9 @@ public class DbInitializer
                     Description = "Niezbyt szybka trasa po bulwarach, z przerwą na lody i zdjęcia miasta.",
                     Category = "Sport",
                     City = "Warszawa",
-                    Venue = "Bulwary Wiślane",
-                    Latitude = 52.2443,
-                    Longitude = 21.0333
+                    Venue = "Bulwar Flotylli Wiślanej, Powiśle-Solec, Śródmieście, Warszawa, województwo mazowieckie, 00-411, Polska",
+                    Latitude = 52.23296170,
+                    Longitude = 21.04055360
                 },
                 new Activity
                 {
@@ -106,9 +106,9 @@ public class DbInitializer
                     Description = "Wspólne lepienie z gliny w kameralnej grupie, z miejscem na rozmowę i kreatywność.",
                     Category = "Kultura",
                     City = "Warszawa",
-                    Venue = "Pracownia na Pradze",
-                    Latitude = 52.2489,
-                    Longitude = 21.0528
+                    Venue = "6, Aleja Jerzego Waszyngtona, Saska Kępa, Praga-Południe, Warszawa, województwo mazowieckie, 03-910, Polska",
+                    Latitude = 52.23840545,
+                    Longitude = 21.05435813
                 },
                 new Activity
                 {
@@ -118,9 +118,9 @@ public class DbInitializer
                     Category = "Muzyka",
                     IsCancelled = true,
                     City = "Warszawa",
-                    Venue = "Dom Kultury Kadr",
-                    Latitude = 52.1775,
-                    Longitude = 21.0258
+                    Venue = "Dom Kultury Kadr, 32, Wincentego Rzymowskiego, Osiedle Prototypów, Mokotów, Warszawa, województwo mazowieckie, 02-697, Polska",
+                    Latitude = 52.17556545,
+                    Longitude = 21.00319589
                 },
                 new Activity
                 {
@@ -129,9 +129,9 @@ public class DbInitializer
                     Description = "Odbyty spacer sąsiedzki po Łazarzu, zakończony rozmowami przy kawie.",
                     Category = "Towarzyskie",
                     City = "Poznań",
-                    Venue = "Park Wilsona",
-                    Latitude = 52.3999,
-                    Longitude = 16.9003
+                    Venue = "Park Wilsona, Głogowska, Grunwald, Łazarz, Poznań, województwo wielkopolskie, 60-738, Polska",
+                    Latitude = 52.39832640,
+                    Longitude = 16.90330330
                 },
                 new Activity
                 {
@@ -139,11 +139,10 @@ public class DbInitializer
                     Date = DateTime.Now.AddDays(-18).Date.AddHours(17),
                     Description = "Zakończony, przyjazny turniej w parach dobieranych na miejscu.",
                     Category = "Sport",
-                    IsCancelled = true,
                     City = "Poznań",
-                    Venue = "Hala Chwiałka",
-                    Latitude = 52.3897,
-                    Longitude = 16.9206
+                    Venue = "Chwiałka, Ojca Mariana Żelazka, Łęgi Dębińskie, Wilda, Poznań, województwo wielkopolskie, 61-553, Polska",
+                    Latitude = 52.39225270,
+                    Longitude = 16.92883646
                 },
                 new Activity
                 {
@@ -152,9 +151,9 @@ public class DbInitializer
                     Description = "Minione spotkanie z rozmową o reportażu i wymianą czytelniczych poleceń.",
                     Category = "Kultura",
                     City = "Poznań",
-                    Venue = "Biblioteka Raczyńskich",
-                    Latitude = 52.4071,
-                    Longitude = 16.9307
+                    Venue = "Biblioteka Raczyńskich, 19, Plac Wolności, Święty Marcin, Stare Miasto, Poznań, województwo wielkopolskie, 61-739, Polska",
+                    Latitude = 52.40843865,
+                    Longitude = 16.92864653
                 },
                 new Activity
                 {
@@ -162,10 +161,10 @@ public class DbInitializer
                     Date = DateTime.Now.AddDays(-14).Date.AddHours(13),
                     Description = "Minione popołudnie z rekreacyjnym frisbee, przekąskami i poznawaniem ludzi.",
                     Category = "Sport",
-                    City = "Warszawa",
-                    Venue = "Park Skaryszewski",
-                    Latitude = 52.2437,
-                    Longitude = 21.0441
+                    City = "Park Skaryszewski",
+                    Venue = "Park Skaryszewski, Polska",
+                    Latitude = 52.24226560,
+                    Longitude = 21.05556799
                 },
                 new Activity
                 {
@@ -174,9 +173,9 @@ public class DbInitializer
                     Description = "Zakończone spotkanie dla miłośników kawy z rozmowami przy wspólnym stole.",
                     Category = "Kulinarne",
                     City = "Warszawa",
-                    Venue = "Praga Koneser Center",
-                    Latitude = 52.2551,
-                    Longitude = 21.0444
+                    Venue = "Pasaż Konesera, Praga, Praga-Północ, Warszawa, województwo mazowieckie, 03-736, Polska",
+                    Latitude = 52.25589020,
+                    Longitude = 21.04406500
                 },
                 new Activity
                 {
@@ -184,10 +183,10 @@ public class DbInitializer
                     Date = DateTime.Now.AddMonths(2).Date.AddHours(9),
                     Description = "Kilka godzin spokojnego marszu wokół Malty, z przerwą na wspólny posiłek.",
                     Category = "Sport",
-                    City = "Poznań",
-                    Venue = "Jezioro Maltańskie",
-                    Latitude = 52.4028,
-                    Longitude = 16.9860
+                    City = "Jezioro Maltańskie",
+                    Venue = "Jezioro Maltańskie, Polska",
+                    Latitude = 52.40386605,
+                    Longitude = 16.96202833
                 },
                 new Activity
                 {
@@ -196,9 +195,9 @@ public class DbInitializer
                     Description = "Wieczorna trasa po mniej znanych historiach Poznania, a później wspólne wyjście na herbatę.",
                     Category = "Kultura",
                     City = "Poznań",
-                    Venue = "Stary Rynek",
-                    Latitude = 52.4080,
-                    Longitude = 16.9344
+                    Venue = "Stary Rynek, Stare Miasto, Poznań, województwo wielkopolskie, 61-772, Polska",
+                    Latitude = 52.40828915,
+                    Longitude = 16.93359803
                 },
                 new Activity
                 {
@@ -207,9 +206,9 @@ public class DbInitializer
                     Description = "Otwarte rozgrywki 3x3 dla amatorów, z miejscem dla pojedynczych zgłoszeń.",
                     Category = "Sport",
                     City = "Warszawa",
-                    Venue = "OSiR Wola",
-                    Latitude = 52.2381,
-                    Longitude = 20.9650
+                    Venue = "Wola, Warszawa, województwo mazowieckie, Polska",
+                    Latitude = 52.23623790,
+                    Longitude = 20.95478150
                 },
                 new Activity
                 {
@@ -218,9 +217,9 @@ public class DbInitializer
                     Description = "Spacer fotograficzny dla początkujących i zaawansowanych, z omówieniem zdjęć po trasie.",
                     Category = "Kultura",
                     City = "Warszawa",
-                    Venue = "Plac Defilad",
-                    Latitude = 52.2319,
-                    Longitude = 21.0013
+                    Venue = "Plac Defilad, Śródmieście, Warszawa, województwo mazowieckie, 00-901, Polska",
+                    Latitude = 52.23176235,
+                    Longitude = 21.00578160
                 },
                 new Activity
                 {
@@ -229,9 +228,9 @@ public class DbInitializer
                     Description = "Drużynowy quiz i gry towarzyskie dla osób, które chcą spotkać się w większej grupie.",
                     Category = "Towarzyskie",
                     City = "Warszawa",
-                    Venue = "Dom Kultury Śródmieście",
-                    Latitude = 52.2263,
-                    Longitude = 21.0161
+                    Venue = "Dom Kultury Śródmieście, 9, Smolna, Powiśle-Skarpa, Śródmieście, Warszawa, województwo mazowieckie, 00-375, Polska",
+                    Latitude = 52.23302470,
+                    Longitude = 21.02497020
                 }
             };
             
