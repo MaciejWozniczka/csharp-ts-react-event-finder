@@ -4,11 +4,16 @@ import { formatActivityDate } from "../../../app/utils/formatDate";
 import ActivityImage from "../../../app/shared/components/ActivityImage";
 import ActivityDetailsActions from "./ActivityDetailsActions";
 
+function getCategoryValue(category: Activity['category']): string {
+  return typeof category === 'string' ? category : category.value;
+}
+
 export default function ActivityDetailsHeader({
   activity,
 }: {
   activity: Activity;
 }) {
+  const categoryValue = getCategoryValue(activity.category);
   return (
     <Box component="header">
       <Box
@@ -19,11 +24,11 @@ export default function ActivityDetailsHeader({
           mb: 3,
         }}
       >
-        <ActivityImage category={activity.category} eager />
+        <ActivityImage category={categoryValue} eager />
       </Box>
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 1.5 }}>
         <Chip
-          label={activity.category}
+          label={categoryValue}
           sx={{ bgcolor: "primary.light", color: "primary.main" }}
         />
         {activity.isCancelled && (

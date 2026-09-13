@@ -7,7 +7,7 @@ function normalize(value: string) {
     .trim();
 }
 
-function localDate(value: string) {
+function localDate(value: string | Date) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
@@ -22,6 +22,10 @@ export function filterActivities(
   const to = params.get("to") ?? params.get("date") ?? "";
   return activities
     .filter((activity) => {
+      const category =
+        typeof activity.category === "string"
+          ? activity.category
+          : activity.category.value;
       if (
         query &&
         !normalize(
@@ -30,14 +34,14 @@ export function filterActivities(
             activity.description,
             activity.city,
             activity.venue,
-            activity.category,
+            category,
           ].join(" "),
         ).includes(query)
       )
         return false;
       if (
         params.get("category") &&
-        activity.category !== params.get("category")
+        category !== params.get("category")
       )
         return false;
       if (params.get("city") && activity.city !== params.get("city"))

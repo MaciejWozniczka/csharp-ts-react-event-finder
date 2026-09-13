@@ -21,6 +21,12 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import DateTimeInput from "../../../app/shared/components/DateTimeInput";
+import LocationInput from "../../../app/shared/components/LocationInput";
+import { categoryOptions } from "../../../app/utils/categories";
+
+function getCategoryValue(category: Activity['category']): string {
+  return typeof category === 'string' ? category : category.value;
+}
 
 export default function ActivityForm() {
   const {
@@ -48,7 +54,16 @@ export default function ActivityForm() {
 
   useEffect(() => {
     if (activity) {
-      reset(activity);
+      reset({
+        ...activity,
+        category: getCategoryValue(activity.category),
+        location: {
+          city: activity.city,
+          venue: activity.venue,
+          latitude: activity.latitude,
+          longitude: activity.longitude,
+        },
+      });
     }
   }, [activity, reset]);
 
@@ -86,150 +101,45 @@ export default function ActivityForm() {
         Opowiedz, co planujesz. Podaj termin i miejsce, żeby inni mogli
         zaplanować swój czas.
       </Typography>
-      <Paper
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          p: { xs: 2.5, sm: 4 },
-          borderRadius: 4,
-        }}
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{ display: "flex", flexDirection: "column", gap: 3 }}
       >
-        <Box
-          component="form"
-          key={activity?.id ?? "create"}
-          noValidate
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <Box
-            component="fieldset"
-            disabled={saving}
-            sx={{
-              m: 0,
-              p: 0,
-              border: 0,
-              minWidth: 0,
-              display: "flex",
-              flexDirection: "column",
-              gap: 3,
-            }}
-          >
-            <Typography component="h2" variant="h5">
-              Co się wydarzy?
-            </Typography>
-            <TextField
-              {...register("title")}
-              label="Nazwa wydarzenia"
-              required
-              error={!!errors.title}
-              helperText={errors.title?.message}
-              defaultValue={activity?.title ?? ""}
-              placeholder="Np. Sobotni spacer nad Wartą"
-              slotProps={{ htmlInput: { maxLength: 100 } }}
-            />
-            <TextField
-              {...register("description")}
-              label="Opis wydarzenia"
-              required
-              multiline
-              minRows={4}
-              error={!!errors.description}
-              helperText={
-                errors.description?.message ??
-                "Napisz, czego można się spodziewać i co warto zabrać."
-              }
-              defaultValue={activity?.description ?? ""}
-              slotProps={{ htmlInput: { maxLength: 2000 } }}
-            />
-            <TextField
-              select
-              {...register("category")}
-              label="Kategoria"
-              required
-              error={!!errors.category}
-              helperText={errors.category?.message}
-              defaultValue={activity?.category ?? ""}
-            >
-              {[
-                ...new Set([
-                  ...categories,
-                  ...(activity?.category ? [activity.category] : []),
-                ]),
-              ].map((category) => (
-                <MenuItem key={category} value={category}>
-                  {category}
-                </MenuItem>
-              ))}
-            </TextField>
-            <Divider />
-            <Typography component="h2" variant="h5">
-              Kiedy i gdzie?
-            </Typography>
-            <DateTimeInput
-              label="Data i godzina"
-              control={control}
-              name="date"
-            />
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
-                gap: 3,
-              }}
-            >
-              <TextField
-                {...register("city")}
-                label="Miasto"
-                required
-                error={!!errors.city}
-                helperText={errors.city?.message}
-                defaultValue={activity?.city ?? ""}
-                slotProps={{ htmlInput: { maxLength: 100 } }}
-              />
-              <TextField
-                {...register("venue")}
-                label="Adres"
-                required
-                error={!!errors.venue}
-                helperText={errors.venue?.message}
-                defaultValue={activity?.venue ?? ""}
-                slotProps={{ htmlInput: { maxLength: 100 } }}
-              />
-            </Box>
-          </Box>
-          {(updateActivity.isError || createActivity.isError) && (
-            <Alert severity="error" sx={{ mt: 3 }}>
-              Nie udało się zapisać wydarzenia. Twoje dane pozostały w
-              formularzu. Spróbuj ponownie.
-            </Alert>
-          )}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column-reverse", sm: "row" },
-              justifyContent: "flex-end",
-              gap: 1.5,
-              mt: 4,
-            }}
-          >
-            <Button
-              type="button"
-              color="inherit"
-              disabled={saving}
-              onClick={() => navigate(backTo)}
-            >
-              Anuluj
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              loading={saving}
-              startIcon={<Check />}
-            >
-              {id ? "Zapisz zmiany" : "Utwórz wydarzenie"}
-            </Button>
-          </Box>
+        <TextInput label="Title" control={control} name="title" />
+        <TextInput
+          label="Description"
+          name="description"
+          control={control}
+          multiline
+          rows={3}
+        />
+        <Box sx={{ display: "flex", gap: 3 }}>
+          <SelectInput
+            items={categoryOptions}
+            label="Category"
+            control={control}
+            name="category"
+          />
+          <DateTimeInput label="Date" control={control} name="date" />
         </Box>
-      </Paper>
-    </Box>
+        <LocationInput
+          control={control}
+          label="Enter the location"
+          name="location"
+        />
+        <Box sx={{ display: "flex", justifyContent: "end", gap: 3 }}>
+          <Button color="inherit">Cancel</Button>
+          <Button
+            type="submit"
+            color="success"
+            variant="contained"
+            loading={updateActivity.isPending || createActivity.isPending}
+          >
+            Submit
+          </Button>
+        </Box>
+      </Box>
+    </Paper>
   );
 }

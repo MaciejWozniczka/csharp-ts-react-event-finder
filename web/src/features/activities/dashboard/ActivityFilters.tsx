@@ -17,6 +17,10 @@ import ActivityDateRange from "./ActivityDateRange";
 import { useActivities } from "../../../lib/hooks/useActivities";
 import { useActivityFilters } from "../../../lib/hooks/useActivityFilters";
 
+function getCategoryValue(category: Activity['category']): string {
+  return typeof category === 'string' ? category : category.value;
+}
+
 export default function ActivityFilters() {
   const { activities } = useActivities();
   const {
@@ -33,7 +37,9 @@ export default function ActivityFilters() {
   ].sort((a, b) => a.localeCompare(b, "pl"));
   const categories = [
     ...new Set(
-      (activities ?? []).map((activity) => activity.category).filter(Boolean),
+      (activities ?? [])
+        .map((activity) => getCategoryValue(activity.category))
+        .filter(Boolean),
     ),
   ];
   const wide = useMediaQuery(useTheme().breakpoints.up("md"));

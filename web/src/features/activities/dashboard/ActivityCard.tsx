@@ -4,8 +4,13 @@ import { Link, useLocation } from "react-router";
 import { formatActivityDate } from "../../../app/utils/formatDate";
 import ActivityImage from "../../../app/shared/components/ActivityImage";
 
+function getCategoryValue(category: Activity['category']): string {
+  return typeof category === 'string' ? category : category.value;
+}
+
 export default function ActivityCard({ activity }: { activity: Activity }) {
   const location = useLocation();
+  const categoryValue = getCategoryValue(activity.category);
   return (
     <Box
       component="article"
@@ -31,7 +36,7 @@ export default function ActivityCard({ activity }: { activity: Activity }) {
           height: { xs: 190, sm: "100%" },
         }}
       >
-        <ActivityImage category={activity.category} />
+        <ActivityImage category={categoryValue} />
         {activity.isCancelled && (
           <Chip
             size="small"
@@ -55,7 +60,7 @@ export default function ActivityCard({ activity }: { activity: Activity }) {
           color="secondary.main"
           sx={{ lineHeight: 1.5, mb: 1 }}
         >
-          {activity.category}
+          {categoryValue}
         </Typography>
         <Typography
           variant="h4"
