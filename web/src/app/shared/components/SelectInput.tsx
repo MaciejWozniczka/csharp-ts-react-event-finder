@@ -29,6 +29,7 @@ export default function AppSelectInput<T extends FieldValues>(props: Props<T>) {
         value={field.value || ""}
         label={props.label}
         onChange={field.onChange}
+        onBlur={field.onBlur}
       >
         {props.items.map((item, index) => (
           <MenuItem value={item.value} key={index}>

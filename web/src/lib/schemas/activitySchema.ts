@@ -1,7 +1,13 @@
 import { z } from "zod";
 
 function notEmpty(requiredMessage: string) {
-  return z.string().trim().min(1, { message: requiredMessage });
+  return z
+    .string({
+      required_error: requiredMessage,
+      invalid_type_error: requiredMessage,
+    })
+    .trim()
+    .min(1, { message: requiredMessage });
 }
 
 function notEmptyWithLimit(
@@ -10,7 +16,10 @@ function notEmptyWithLimit(
   requiredMessage: string,
 ) {
   return z
-    .string()
+    .string({
+      required_error: requiredMessage,
+      invalid_type_error: requiredMessage,
+    })
     .max(limit, { message: limitMessage })
     .trim()
     .min(1, { message: requiredMessage });
@@ -34,9 +43,16 @@ export const activitySchema = z.object({
   }),
   location: z.object({
     venue: notEmpty("Miejsce jest wymagane"),
-    city: z.string().optional(),
-    latitude: z.coerce.number(),
-    longitude: z.coerce.number(),
+    city: notEmpty("Miasto jest wymagane"),
+    latitude: z.coerce.number({
+      invalid_type_error: "Szerokość geograficzna jest wymagana",
+    }),
+    longitude: z.coerce.number({
+      invalid_type_error: "Długość geograficzna jest wymagana",
+    }),
+  }, {
+    required_error: "Lokalizacja jest wymagana",
+    invalid_type_error: "Wybierz lokalizację z listy sugestii",
   }),
 });
 

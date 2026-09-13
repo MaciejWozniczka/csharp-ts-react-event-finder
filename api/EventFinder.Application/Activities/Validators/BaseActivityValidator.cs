@@ -9,18 +9,17 @@ public class BaseActivityValidator<T, TDto> : AbstractValidator<T> where TDto : 
             .MaximumLength(100).WithMessage("Tytuł nie może być dłuższy niż 100 znaków");
         RuleFor(x => selector(x).Description)
             .NotEmpty().WithMessage("Opis jest wymagany")
-            .MaximumLength(2000).WithMessage("Tytuł nie może być dłuższy niż 2000 znaków");
+            .MaximumLength(2000).WithMessage("Opis nie może być dłuższy niż 2000 znaków");
         RuleFor(x => selector(x).Date)
-            .NotEmpty().WithMessage("Data jest wymagana")
-            .GreaterThan(DateTime.UtcNow).WithMessage("Data wydarzenia musi być w przyszłości");
+            .NotEmpty().WithMessage("Data jest wymagana");
         RuleFor(x => selector(x).Category)
             .NotEmpty().WithMessage("Kategoria jest wymagana");
         RuleFor(x => selector(x).City)
             .NotEmpty().WithMessage("Miasto jest wymagane")
-            .MaximumLength(100).WithMessage("Tytuł nie może być dłuższy niż 100 znaków");
+            .MaximumLength(100).WithMessage("Miasto nie może być dłuższe niż 100 znaków");
         RuleFor(x => selector(x).Venue)
             .NotEmpty().WithMessage("Miejsce jest wymagane")
-            .MaximumLength(100).WithMessage("Tytuł nie może być dłuższy niż 100 znaków");
+            .MaximumLength(100).WithMessage("Miejsce nie może być dłuższe niż 100 znaków");
         RuleFor(x => selector(x).Latitude)
             .NotEmpty().WithMessage("Szerokość geograficzna jest wymagana")
             .InclusiveBetween(-90d, 90d).WithMessage("Szerokość geograficzna musi mieścić się w zakresie od -90 do 90");
