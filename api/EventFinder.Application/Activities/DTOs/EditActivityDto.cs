@@ -3,4 +3,5 @@
 public class EditActivityDto : BaseActivityDto
 {
     public Guid Id { get; set; } = Guid.Empty;
+    public bool IsCancelled { get; set; }
 }
