@@ -1,18 +1,10 @@
-import {
-  Box,
-  Container,
-  CssBaseline,
-  ThemeProvider,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import { Outlet, ScrollRestoration } from "react-router";
 import NavBar from "./NavBar";
-import theme from "./theme";
 
 export default function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <>
       <ScrollRestoration
         getKey={(location) => location.pathname + location.search}
       />
@@ -54,6 +46,6 @@ export default function App() {
           </Container>
         </Box>
       </Box>
-    </ThemeProvider>
+    </>
   );
 }
