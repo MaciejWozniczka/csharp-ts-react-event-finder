@@ -54,9 +54,6 @@ export default function ActivityDetailsInfo({
             <Typography sx={{ fontWeight: 500, overflowWrap: "anywhere" }}>
               {activity.venue}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {activity.city}
-            </Typography>
           </Box>
         </Box>
       </Box>
