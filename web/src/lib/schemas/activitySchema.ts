@@ -32,16 +32,12 @@ export const activitySchema = z.object({
     required_error: "Data jest wymagana",
     invalid_type_error: "Data jest wymagana",
   }),
-  city: notEmptyWithLimit(
-    100,
-    "Tytuł nie może być dłuższy niż 100 znaków",
-    "Miasto jest wymagane",
-  ),
-  venue: notEmptyWithLimit(
-    100,
-    "Tytuł nie może być dłuższy niż 100 znaków",
-    "Miejsce jest wymagane",
-  ),
+  location: z.object({
+    venue: notEmpty("Miejsce jest wymagane"),
+    city: z.string().optional(),
+    latitude: z.coerce.number(),
+    longitude: z.coerce.number(),
+  }),
 });
 
 export type ActivitySchema = z.infer<typeof activitySchema>;
