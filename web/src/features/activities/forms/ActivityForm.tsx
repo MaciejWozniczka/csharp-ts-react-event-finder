@@ -9,20 +9,30 @@ import {
   MenuItem,
 } from "@mui/material";
 import { ArrowBack, Check } from "@mui/icons-material";
-import { type SubmitEvent } from "react";
 import { useActivities } from "../../../lib/hooks/useActivities";
 import { Link, useNavigate, useParams } from "react-router";
 import { categories } from "../../../app/utils/categories";
 import ActivityLoadState from "../../../app/shared/components/ActivityLoadState";
-
-function toDateTimeLocalValue(value: string): string {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "";
-  const pad = (part: number) => part.toString().padStart(2, "0");
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-}
+import { useEffect } from "react";
+import {
+  activitySchema,
+  type ActivitySchema,
+} from "../../../lib/schemas/activitySchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import DateTimeInput from "../../../app/shared/components/DateTimeInput";
 
 export default function ActivityForm() {
+  const {
+    control,
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ActivitySchema>({
+    mode: "onTouched",
+    resolver: zodResolver(activitySchema),
+  });
   const { id } = useParams();
   const {
     updateActivity,
@@ -32,33 +42,18 @@ export default function ActivityForm() {
     activityError,
     refetchActivity,
   } = useActivities(id);
-  const navigate = useNavigate();
   const saving = updateActivity.isPending || createActivity.isPending;
   const backTo = id ? `/activities/${id}` : "/activities";
+  const navigate = useNavigate();
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (saving || (id && !activity)) return;
-    const formData = new FormData(event.currentTarget);
-    const text = (key: string) => String(formData.get(key) ?? "").trim();
-    const data: Activity = {
-      id: activity?.id ?? "",
-      title: text("title"),
-      description: text("description"),
-      category: text("category"),
-      date: new Date(text("date")).toISOString(),
-      city: text("city"),
-      venue: text("venue"),
-      isCancelled: activity?.isCancelled ?? false,
-      latitude: activity?.latitude ?? 0,
-      longitude: activity?.longitude ?? 0,
-    };
-    if (activity)
-      updateActivity.mutate(data, { onSuccess: () => navigate(backTo) });
-    else
-      createActivity.mutate(data, {
-        onSuccess: (createdId) => navigate(`/activities/${createdId}`),
-      });
+  useEffect(() => {
+    if (activity) {
+      reset(activity);
+    }
+  }, [activity, reset]);
+
+  const onSubmit = (data: ActivitySchema) => {
+    console.log(data);
   };
 
   if (id && (isLoadingActivity || !activity))
@@ -102,7 +97,8 @@ export default function ActivityForm() {
         <Box
           component="form"
           key={activity?.id ?? "create"}
-          onSubmit={handleSubmit}
+          noValidate
+          onSubmit={handleSubmit(onSubmit)}
         >
           <Box
             component="fieldset"
@@ -121,27 +117,36 @@ export default function ActivityForm() {
               Co się wydarzy?
             </Typography>
             <TextField
-              name="title"
+              {...register("title")}
               label="Nazwa wydarzenia"
               required
+              error={!!errors.title}
+              helperText={errors.title?.message}
               defaultValue={activity?.title ?? ""}
               placeholder="Np. Sobotni spacer nad Wartą"
-              slotProps={{ htmlInput: { maxLength: 200, pattern: ".*\\S.*" } }}
+              slotProps={{ htmlInput: { maxLength: 100 } }}
             />
             <TextField
-              name="description"
+              {...register("description")}
               label="Opis wydarzenia"
               required
               multiline
               minRows={4}
+              error={!!errors.description}
+              helperText={
+                errors.description?.message ??
+                "Napisz, czego można się spodziewać i co warto zabrać."
+              }
               defaultValue={activity?.description ?? ""}
-              helperText="Napisz, czego można się spodziewać i co warto zabrać."
+              slotProps={{ htmlInput: { maxLength: 2000 } }}
             />
             <TextField
               select
-              name="category"
+              {...register("category")}
               label="Kategoria"
               required
+              error={!!errors.category}
+              helperText={errors.category?.message}
               defaultValue={activity?.category ?? ""}
             >
               {[
@@ -159,16 +164,10 @@ export default function ActivityForm() {
             <Typography component="h2" variant="h5">
               Kiedy i gdzie?
             </Typography>
-            <TextField
-              name="date"
+            <DateTimeInput
               label="Data i godzina"
-              type="datetime-local"
-              required
-              defaultValue={
-                activity?.date ? toDateTimeLocalValue(activity.date) : ""
-              }
-              slotProps={{ inputLabel: { shrink: true } }}
-              helperText="Godzina w Twojej lokalnej strefie czasowej."
+              control={control}
+              name="date"
             />
             <Box
               sx={{
@@ -178,18 +177,22 @@ export default function ActivityForm() {
               }}
             >
               <TextField
-                name="city"
+                {...register("city")}
                 label="Miasto"
                 required
+                error={!!errors.city}
+                helperText={errors.city?.message}
                 defaultValue={activity?.city ?? ""}
-                slotProps={{ htmlInput: { pattern: ".*\\S.*" } }}
+                slotProps={{ htmlInput: { maxLength: 100 } }}
               />
               <TextField
-                name="venue"
-                label="Miejsce lub adres"
+                {...register("venue")}
+                label="Adres"
                 required
+                error={!!errors.venue}
+                helperText={errors.venue?.message}
                 defaultValue={activity?.venue ?? ""}
-                slotProps={{ htmlInput: { pattern: ".*\\S.*" } }}
+                slotProps={{ htmlInput: { maxLength: 100 } }}
               />
             </Box>
           </Box>
